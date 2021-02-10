@@ -85,10 +85,32 @@ class Karteikarten(object):
         randomObj = random.choice(mylist)
         return randomObj
     
+    @staticmethod 
+    def incrementFalseAnswerIndex(index): 
+        indexObj = int(index)
+        indexObj += 1
+        str(indexObj)
+        return indexObj 
+
+    @staticmethod 
+    def incrementTrueAnswerIndex(index): 
+        indexObj = int(index)
+        indexObj += 1
+        str(indexObj)
+        return indexObj 
+     
+
+
     def checkAnswer(self, liste): 
 
+        # Zaehler fuer Listeniteration    
         i = 0    
+
+        # Liste, in denen die richtig-beantworteten
+        # Antworten stehen, also
+        # der naechste Kasten
         kasten_2 = []
+
 
          # hole jede einzele Frage und speichere sie in Liste
         fragenCounter   = 0
@@ -106,12 +128,14 @@ class Karteikarten(object):
         richtigListe        = []
 
 
-        # Durchlaufe die Laenge der Liste
+        # Durchlaufe die Liste
         while i< len(liste):
                 
             # Waehle zufaelliges Objekt aus der Liste
             randomObject  = Karteikarten.generateRandomListObject(liste)
 
+            # Index des aktuelles Elements
+            indexOfCurrenObject = liste.index(randomObject)
 
             # Stelle Frage
             print(randomObject[0])
@@ -123,16 +147,38 @@ class Karteikarten(object):
             # der Richtigen entspricht
             if userAnswer != randomObject[1]: 
                 print("Falsche Antwort")
+
+                # Inkrementiere den Zaheler fuer falsch-
+                # beantwortete Fragen
+                incrementFalseElement = Karteikarten.incrementFalseAnswerIndex(liste[indexOfCurrenObject][2])
+              
+                # Setze den aktuellen Zaehler fuer die falsch- 
+                # beantwortete Antwort auf den inkrementierten 
+                # Wert
+                liste[indexOfCurrenObject][2] = incrementFalseElement
+
                 # Durchmische die Liste
                 random.shuffle(liste)
             else: 
                 print("Richtige Antwort")
+
+                # Inkrementiere den Zaheler fuer richtig-
+                # beantwortete Fragen
+                incrementTrueElement = Karteikarten.incrementTrueAnswerIndex(liste[indexOfCurrenObject][3])
+
+
+                # Setze den aktuellen Zaehler fuer die richtig- 
+                # beantwortete Antwort auf den inkrementierten 
+                # Wert
+                liste[indexOfCurrenObject][3] = incrementTrueElement
 
                 # Fuege das Objekt dem zweiten Kasten hinzu 
                 # und entferne es auf dem urspuenglichen Kasten
                 kasten_2.append(randomObject)
                 liste.remove(randomObject)
 
+
+        print(kasten_2)
         return kasten_2
 
 
