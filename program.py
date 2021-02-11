@@ -51,48 +51,9 @@ def calculateStudyTime():
 
 class Karteikarten(object):
 
-    liste           = []
-    frage           = ""
-    antwort         = ""
-
     # Leerer Konstruktor
     def __init__(self):
         pass
-    
-    # Lese übergebene CSV-Datei aus
-    def readCsvFile(self,file): 
-        # Leere Liste, der die einzelnen Daten aus der Csv Datei 
-        # hinzugefuegt werden
-        fragen_Antworten = []
-
-        with open(file,"r") as csv_reader:
-
-            # Ignoriere die einzelnen Tabellenbezeichnungen
-            csv_reader.readline()
-
-            # Lese die einzelnen Zeilen der CSV-Datei
-            for line in csv_reader: 
-
-                # Fuege die einzelnen Zeilen einer Liste hinzu.
-                # Gebe an, dass die Objekte nach Kommata getrennt werden
-                fragen_Antworten.append(line.split(","))
-
-        # Gebe die Liste mit Fragen, Antworten und Fachnummer zurück
-        return fragen_Antworten
-
-    # Schreibe Listenobjekte in CSV-Datei 
-    def writeCsvFile(self, liste): 
-        with open("Box_2.csv","w") as csv_writer: 
-
-            # Lege die Ueberschriften fest 
-            csv_writer.write(",".join(["Fragen,Antworten","AntwortFalsch","AntwortRichtig\n"]))
-
-            # Druchlaufe die Objekte
-            for i in liste: 
-                # Schreibe jeweiliges Objekt in Zeile
-                csv_writer.write(",".join([str(j) for j in i]))
-                csv_writer.write("\n")
-
 
 
     # Hole zufaellige Objekte aus der Liste
@@ -115,9 +76,57 @@ class Karteikarten(object):
         str(indexObj)
         return indexObj 
      
+    
+    # Lese übergebene CSV-Datei aus
+    def readCsvFile(self,file): 
+
+        # Leere Liste, der die einzelnen Daten aus der Csv Datei 
+        # hinzugefuegt werden
+        fragen_Antworten = []
+
+        with open(file,"r") as csv_reader:
+
+            # Ignoriere die einzelnen Tabellenbezeichnungen
+            csv_reader.readline()
+
+            # Lese die einzelnen Zeilen der CSV-Datei
+            for line in csv_reader: 
+
+                # Fuege die einzelnen Zeilen einer Liste hinzu.
+                # Gebe an, dass die Objekte nach Kommata getrennt werden
+                fragen_Antworten.append(line.split(","))
+
+        # Gebe die Liste mit Fragen, Antworten und Fachnummer zurück
+        return fragen_Antworten
 
 
-    def checkAnswer(self, liste): 
+
+
+    # Schreibe Listenobjekte in CSV-Datei 
+    def writeCsvFile(self, obj, filename): 
+        with open(filename,"a") as csv_writer: 
+
+            # Lege die Ueberschriften fest 
+            #csv_writer.write(",".join(["Fragen,Antworten","AntwortFalsch","AntwortRichtig\n"]))
+
+            for character in obj: 
+
+                csv_writer.write(str(character))
+                csv_writer.write(",")
+
+            csv_writer.write("\n")
+
+            # # Druchlaufe die Objekte
+            # for i in liste: 
+            #     # Schreibe jeweiliges Objekt in Zeile
+            #     csv_writer.write(",".join([str(j) for j in i]))
+            #     csv_writer.write("\n")
+
+        return csv_writer
+
+
+
+    def checkAnswer(self, liste, filename): 
 
         # Zaehler fuer Listeniteration    
         i = 0    
@@ -125,7 +134,7 @@ class Karteikarten(object):
         # Liste, in denen die richtig-beantworteten
         # Antworten stehen, also
         # der naechste Kasten
-        kasten_2 = []
+        kasten = []
 
         # Durchlaufe die Liste
         while i< len(liste):
@@ -173,14 +182,15 @@ class Karteikarten(object):
                 # Wert
                 liste[indexOfCurrenObject][3] = incrementTrueElement
 
+                # Fuege richtig-beantwortetes Objekt in die CSV-Datei
+                # des zweiten Kastens
+                type(self).writeCsvFile(self,randomObject,filename)
+
                 # Fuege das Objekt dem zweiten Kasten hinzu 
                 # und entferne es auf dem urspuenglichen Kasten
-                kasten_2.append(randomObject)
                 liste.remove(randomObject)
-
                 print()
 
-        return kasten_2
 
 
 
@@ -209,9 +219,6 @@ box_5 = []
 k1 = Karteikarten()
 
 # Lese Csv aus 
-box_1 = k1.readCsvFile("/home/DoganFed/Documents/BauingenAufgabe/Box_1.csv")
+box_1 = k1.readCsvFile("Box_1.csv")
 
-# Verleiche Fragen und Antworten
-comp_1 = k1.checkAnswer(box_1)
-
-kartenBox_1 = k1.writeCsvFile(comp_1)
+k1.checkAnswer(box_1, "Box_2.csv")
