@@ -11,6 +11,7 @@ print("Wie viele Minuten wollen Sie lernen?")
 
 # Zeiteingabe des Benutzers
 eingabe = input()    
+print()
 
 # Bestimme die Lernzeit
 def calculateStudyTime():
@@ -79,6 +80,21 @@ class Karteikarten(object):
         # Gebe die Liste mit Fragen, Antworten und Fachnummer zurück
         return fragen_Antworten
 
+    # Schreibe Listenobjekte in CSV-Datei 
+    def writeCsvFile(self, liste): 
+        with open("Box_2.csv","w") as csv_writer: 
+
+            # Lege die Ueberschriften fest 
+            csv_writer.write(",".join(["Fragen,Antworten","AntwortFalsch","AntwortRichtig\n"]))
+
+            # Druchlaufe die Objekte
+            for i in liste: 
+                # Schreibe jeweiliges Objekt in Zeile
+                csv_writer.write(",".join([str(j) for j in i]))
+                csv_writer.write("\n")
+
+
+
     # Hole zufaellige Objekte aus der Liste
     @staticmethod
     def generateRandomListObject(mylist): 
@@ -111,23 +127,6 @@ class Karteikarten(object):
         # der naechste Kasten
         kasten_2 = []
 
-
-         # hole jede einzele Frage und speichere sie in Liste
-        fragenCounter   = 0
-        anwortCounter   = 0
-        fehlerCounter   = 0
-        richtigCounter  = 0
-
-        # einzelne Elemente werden in einzelnen Listen verstaut
-        randomObjectListe   = []
-        randomQuestionList  = []
-        randomAnswerList    = []
-        frageListe          = []
-        antwortListe        = []
-        fehlerListe         = []
-        richtigListe        = []
-
-
         # Durchlaufe die Liste
         while i< len(liste):
                 
@@ -159,6 +158,8 @@ class Karteikarten(object):
 
                 # Durchmische die Liste
                 random.shuffle(liste)
+
+                print()
             else: 
                 print("Richtige Antwort")
 
@@ -177,8 +178,8 @@ class Karteikarten(object):
                 kasten_2.append(randomObject)
                 liste.remove(randomObject)
 
+                print()
 
-        print(kasten_2)
         return kasten_2
 
 
@@ -187,6 +188,7 @@ class Karteikarten(object):
 
 
 
+# Lernzeit
 calculateStudyTime()
 
 
@@ -205,5 +207,11 @@ box_5 = []
 
 
 k1 = Karteikarten()
-box_1 = k1.readCsvFile("/home/DoganFed/Documents/BauingenAufgabe/fragenAntworten.csv")
-k1.checkAnswer(box_1)
+
+# Lese Csv aus 
+box_1 = k1.readCsvFile("/home/DoganFed/Documents/BauingenAufgabe/Box_1.csv")
+
+# Verleiche Fragen und Antworten
+comp_1 = k1.checkAnswer(box_1)
+
+kartenBox_1 = k1.writeCsvFile(comp_1)
