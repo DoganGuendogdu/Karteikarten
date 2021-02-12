@@ -1,4 +1,5 @@
 import datetime
+from os import write
 import random
 
 # Begruessung
@@ -76,7 +77,30 @@ class Karteikarten(object):
         str(indexObj)
         return indexObj 
      
-    
+
+    # # Loesche Elemenr aus der CSV-Datei
+    # def deleteRowCSV(self, obj, filename): 
+        
+    #     objNew = ""
+
+
+    #     for i in obj: 
+            
+    #         objNew += str(i)
+    #         objNew += ","
+
+    #     result = objNew[0:-1]        
+    #     result[-1] = str(counter)
+
+    #     print("result: "+ result)
+
+    #     with open(filename, "r") as csv_delete_row: 
+            
+    #         for i in csv_delete_row: 
+    #             print(i)
+
+
+
     # Lese übergebene CSV-Datei aus
     def readCsvFile(self,file): 
 
@@ -99,21 +123,23 @@ class Karteikarten(object):
         # Gebe die Liste mit Fragen, Antworten und Fachnummer zurück
         return fragen_Antworten
 
-
-
-
     # Schreibe Listenobjekte in CSV-Datei 
     def writeCsvFile(self, obj, filename): 
+
+
         with open(filename,"a") as csv_writer: 
 
             # Lege die Ueberschriften fest 
             #csv_writer.write(",".join(["Fragen,Antworten","AntwortFalsch","AntwortRichtig\n"]))
-
-            for character in obj: 
-
-                csv_writer.write(str(character))
-                csv_writer.write(",")
-
+            
+            # Fuege die einzelnen Elemente in eine Reihe
+            csv_writer.write(obj[0])
+            csv_writer.write(",")
+            csv_writer.write(obj[1])
+            csv_writer.write(",")
+            csv_writer.write(str(obj[2]))
+            csv_writer.write(",")
+            csv_writer.write(str(obj[3]))
             csv_writer.write("\n")
 
             # # Druchlaufe die Objekte
@@ -126,15 +152,10 @@ class Karteikarten(object):
 
 
 
-    def checkAnswer(self, liste, filename): 
+    def checkAnswerBox_1(self, liste, writeInFile, deleteFromFile): 
 
         # Zaehler fuer Listeniteration    
         i = 0    
-
-        # Liste, in denen die richtig-beantworteten
-        # Antworten stehen, also
-        # der naechste Kasten
-        kasten = []
 
         # Durchlaufe die Liste
         while i< len(liste):
@@ -183,8 +204,12 @@ class Karteikarten(object):
                 liste[indexOfCurrenObject][3] = incrementTrueElement
 
                 # Fuege richtig-beantwortetes Objekt in die CSV-Datei
-                # des zweiten Kastens
-                type(self).writeCsvFile(self,randomObject,filename)
+                # des nächsten Kastens
+                type(self).writeCsvFile(self,randomObject,writeInFile)
+
+
+                #type(self).deleteRowCSV(self, randomObject, deleteFromFile )
+
 
                 # Fuege das Objekt dem zweiten Kasten hinzu 
                 # und entferne es auf dem urspuenglichen Kasten
@@ -217,8 +242,26 @@ box_5 = []
 
 
 k1 = Karteikarten()
+k2 = Karteikarten()
 
-# Lese Csv aus 
+# Lese ersten Kasten aus 
 box_1 = k1.readCsvFile("Box_1.csv")
+# Lernprozess fuer den ersten Kasten
+k1.checkAnswerBox_1(box_1, "Box_2.csv", "Box_1.csv")
 
-k1.checkAnswer(box_1, "Box_2.csv")
+# ------------------------------------------------------ #
+print("Moechten Sie mit der zweiten Box fortahren?")
+print("ja? / nein?")
+eingabe = input()
+eingabe = eingabe.lower()
+
+if eingabe == "ja": 
+
+    # Lesen zweiten Kasten aus
+    box_2 = k2.readCsvFile("Box_2.csv") 
+    # Lernprozess fuer den zweiten Kasten
+    #k2.checkAnswer(box_2, "Box_3.csv", "Box_1.csv")
+
+else:
+    quit() 
+# --------------------------------------------------- #
