@@ -362,6 +362,76 @@ class Karteikarten(object):
 
                 print()
 
+    # Lernprozess fuer Box 5 
+    def checkBox5(self, liste):
+         # Zaehler fuer Listeniteration    
+        i = 0   
+
+        while i< len(liste): 
+            # Waehle zufaellige Frage
+            randomObj = type(self).randomQuestion(liste)
+
+            # Index des Frage-Objektes
+            index     = type(self).getIndex(liste, randomObj)
+
+            # Hole die Frage
+            question  = str(type(self).getQuestion(randomObj))
+            
+            # Anzahl fuer korrekt-beantwortet
+            correctIndex = type(self).getCorrectIndex(randomObj)
+            
+            # Anzahl fuer falsch-beantwortet
+            falseIndex  = type(self).getWrongIndex(randomObj)
+
+            # Stelle die Frage
+            type(self).printQuestion(question)
+
+            # Nehme Antwort des Users entgegen
+            userAnswer = type(self).userAnswer()
+
+            # Uberpruefe, ob die eingegebene Antwort
+            # richtig ist
+            if userAnswer == type(self).getAnswer(randomObj):
+                print("Richtige Antwort!")
+
+                # Erhoehe den Zaehler fuer die richtig-
+                # beantwortete Frage
+                incrementTrueIndex    = type(self).incrementCorrectIndex(correctIndex)
+                randomObj[2]          = incrementTrueIndex
+
+                # Wenn Frage richtig, so loesche aus 
+                # aktueller Csv-Datei
+                type(self).deleteAnswer(self, randomObj)
+
+                # Entferne die richtig beantwortete Frage  
+                liste.remove(randomObj)
+
+                # Durchmische die Liste
+                random.shuffle(liste)
+
+                print()
+            else: 
+                print("Falsche Antwort!")
+
+                # Erhoehe den Zaehler fuer die falsch-
+                # beantwortete Frage
+                incrementFalseIndex = type(self).incrementWrongIndex(falseIndex)
+                randomObj[3]        = incrementFalseIndex
+
+                # Schreibe falsch-beantwortete Frage in 
+                # Kasten 1
+                type(self).writeBeforeCsvFile(self,randomObj)
+
+                # Loesche aktuelles Objekt aus der Liste
+                type(self).deleteAnswer(self, randomObj)
+
+                # Entferne die falsch beantwortete Frage aus der aktuellen Box
+                liste.remove(randomObj)
+
+                # Durchmische die Liste
+                random.shuffle(liste)
+
+                print()
 
 
 
@@ -441,4 +511,7 @@ kartenBox5  = []
 print("Box 5 jetzt")
 k5          = Karteikarten("Box_5.csv", "Box_1.csv", None)
 kartenBox5  = k5.readCsvFileOtherBox()
-k5.checkOtherBoxes(kartenBox5)
+k5.checkBox5(kartenBox5)
+
+print("Alle Fragen wurden beantwortet!")
+print("Hier ist ihre Statistik")
