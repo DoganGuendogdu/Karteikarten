@@ -83,19 +83,11 @@ class Karteikarten(object):
             # Loesche das vorherige Element aus Kasten 1, 
             # damit Dupliakte vermieden werden
             for row in csv_reader: 
-                
-                # # Uerberlese die Uerbschrift
-                # if "Frage" in row: 
-                #     continue
-
-                # Wenn Fragepbjekt schon existiert,
-                # dann loesche es
-                if obj[0] in row: 
-                    del(row)
-                else: 
-                    kasten1.append(row)
         
-        # Aktualisiere mit aktuellen Werten
+                kasten1.append(row)
+        
+        # Fuege falsch-beantwortete Frage 
+        # noch dazu
         kasten1.append(result)          
 
         # Fuege Aktuelles Objekt in Kasten 1
@@ -140,10 +132,10 @@ class Karteikarten(object):
             for element in kasten1: 
                 csv_writer.write(element)
         
-    # Wenn Frage richtig beantwortet worden ist, 
+    # Wenn Frage richtig ODER falsch beantwortet worden ist, 
     # so loesche es aus der aktuellen Box,
-    # da diese in die naechste uebergeht
-    def deleteRightAnswer(self, obj): 
+    # da diese in die naechste ODER vorherige uebergeht
+    def deleteAnswer(self, obj): 
         
         kasten = []
 
@@ -272,7 +264,7 @@ class Karteikarten(object):
 
                 # Wenn Frage richtig, so loesche aus 
                 # aktueller Csv-Datei
-                type(self).deleteRightAnswer(self, randomObj)
+                type(self).deleteAnswer(self, randomObj)
 
                 # Entferne die richtig beantwortete Frage  
                 liste.remove(randomObj)
@@ -336,14 +328,9 @@ class Karteikarten(object):
                 # des naechsten Kastens
                 type(self).writeNextCsvFile(self, randomObj)
 
-                # Entferne aktuelle Frage aus dem aktuellen Kasen
-                #---------------------------------------------#
-                #---------------------------------------------#
-                # with open (self._file, "w") as csv_writer: 
-
-                #     del(randomObj)
-
-                #     csv_writer.close()        
+                # Wenn Frage richtig, so loesche aus 
+                # aktueller Csv-Datei
+                type(self).deleteAnswer(self, randomObj)
 
                 # Entferne die richtig beantwortete Frage  
                 liste.remove(randomObj)
@@ -363,6 +350,9 @@ class Karteikarten(object):
                 # Schreibe falsch-beantwortete Frage in 
                 # Kasten 1
                 type(self).writeBeforeCsvFile(self,randomObj)
+
+                # Loesche aktuelles Objekt aus der Liste
+                type(self).deleteAnswer(self, randomObj)
 
                 # Entferne die falsch beantwortete Frage aus der aktuellen Box
                 liste.remove(randomObj)
@@ -425,17 +415,30 @@ endTime = startTime + datetime.timedelta(minutes=getStudyTime())
 kartenBox1  = []
 kartenBox2  = []
 kartenBox3  = []
+kartenBox4  = []
+kartenBox5  = []
 
-k1          = Karteikarten("Box_1.csv", None, "Box_2.csv")
-kartenBox1  =  k1.readCsvFileBox1()
-k1.checkBox1(kartenBox1)
+# print("Box 1 jetzt")
+# k1          = Karteikarten("Box_1.csv", None, "Box_2.csv")
+# kartenBox1  =  k1.readCsvFileBox1()
+# k1.checkBox1(kartenBox1)
 
 # print("Box 2 jetzt")
-
 # k2          = Karteikarten("Box_2.csv", "Box_1.csv", "Box_3.csv")
 # kartenbox2  = k2.readCsvFileOtherBox() 
 # k2.checkOtherBoxes(kartenbox2)
 
+# print("Box 3 jetzt")
 # k3          = Karteikarten("Box_3.csv", "Box_1.csv", "Box_4.csv")
 # kartenBox3  = k3.readCsvFileOtherBox()
 # k3.checkOtherBoxes(kartenBox3)
+
+# print("Box 4 Jetzt")
+# k4          = Karteikarten("Box_4.csv", "Box_1.csv", "Box_5.csv")
+# kartenBox4  = k4.readCsvFileOtherBox()
+# k4.checkOtherBoxes(kartenBox4)
+
+print("Box 5 jetzt")
+k5          = Karteikarten("Box_5.csv", "Box_1.csv", None)
+kartenBox5  = k5.readCsvFileOtherBox()
+k5.checkOtherBoxes(kartenBox5)
