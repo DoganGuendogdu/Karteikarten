@@ -140,7 +140,24 @@ class Karteikarten(object):
             for element in kasten1: 
                 csv_writer.write(element)
         
-    
+    # Wenn Frage richtig beantwortet worden ist, 
+    # so loesche es aus der aktuellen Box,
+    # da diese in die naechste uebergeht
+    def deleteRightAnswer(self, obj): 
+        
+        kasten = []
+
+        with open(self._file, "r") as csv_reader: 
+            for row in csv_reader: 
+                if obj[0] in row:
+                    del(row)
+                else: 
+                    kasten.append(row)
+                
+        with open(self._file, "w") as csv_writer: 
+            for element in kasten: 
+                csv_writer.write(element)
+
 
 
     # Frage
@@ -253,15 +270,9 @@ class Karteikarten(object):
                 # des zweiten Kastens
                 type(self).writeNextCsvFile(self, randomObj)
 
-                # Entferne aktuelle Frage aus dem ersten Kasen
-                #---------------------------------------------#
-                #---------------------------------------------#
-                # with open (self._file, "w") as csv_writer: 
-
-                #     del(randomObj)
-
-                #     csv_writer.close()        
-
+                # Wenn Frage richtig, so loesche aus 
+                # aktueller Csv-Datei
+                type(self).deleteRightAnswer(self, randomObj)
 
                 # Entferne die richtig beantwortete Frage  
                 liste.remove(randomObj)
