@@ -1,5 +1,6 @@
 import datetime
 import random
+from typing import ClassVar
 
 
 class Karteikarten(object):
@@ -66,21 +67,56 @@ class Karteikarten(object):
             answerWrong = str(obj[3])
             csv_writer.write(question+answer+answerRight+answerWrong)
             
-
-
-
-
     # Schreibe in den ersten Kasten
     def writeBeforeCsvFile(self, obj): 
 
-        # Fuege einzelne Elemente in eine Zeile ein
-        with open(self._fileBefore, "a") as csv_writer: 
-            question    = str(obj[0]) + "," 
-            answer      = str(obj[1]) + ","
-            answerRight = str(obj[2]) + ","
-            answerWrong = str(obj[3]) 
-            csv_writer.write(question+answer+answerRight+answerWrong)
-            
+        # # Fuege einzelne Elemente in eine Zeile ein
+        # with open(self._fileBefore, "a") as csv_writer: 
+        #     question    = str(obj[0]) + "," 
+        #     answer      = str(obj[1]) + ","
+        #     answerRight = str(obj[2]) + ","
+        #     answerWrong = str(obj[3]) 
+        #     csv_writer.write(question+answer+answerRight+answerWrong)
+
+        kasten1 = []   
+
+        question    = str(obj[0]) + ","
+        answer      = str(obj[1]) + ","
+        answerRight = str(obj[2]) + ","
+        answerWrong = str(obj[3]) 
+        result      = question+answer+answerRight+answerWrong
+
+
+        with open(self._fileBefore, "r") as csv_reader: 
+           
+            # Loesche das vorherige Element aus Kasten 1, 
+            # damit Dupliakte vermieden werden
+            for row in csv_reader: 
+                
+                # # Uerberlese die Uerbschrift
+                # if "Frage" in row: 
+                #     continue
+
+                # Wenn Fragepbjekt schon existiert,
+                # dann loesche es
+                if obj[0] in row: 
+                    del(row)
+                else: 
+                    kasten1.append(row)
+        
+        # Aktualisiere mit aktuellen Werten
+        kasten1.append(result)          
+
+        # Fuege Aktuelles Objekt in Kasten 1
+        with open(self._fileBefore, "w") as csv_writer: 
+            for element in kasten1: 
+                csv_writer.write(element)
+
+
+    
+
+
+
     # Frage
     def getQuestion(obj):  
         
@@ -121,11 +157,6 @@ class Karteikarten(object):
         str(indexObj)
         return indexObj 
 
-    # Hole Index fuer falsche Antwort
-    @staticmethod
-    def getWrongIdex(obj): 
-        index = obj[3]
-        return int(index)
 
     # Erhoehe Index fuer falsche Antwort
     def incrementWrongIndex(index): 
@@ -205,7 +236,6 @@ class Karteikarten(object):
 
                 #     csv_writer.close()        
 
-                print(randomObj)
 
                 # Entferne die richtig beantwortete Frage  
                 liste.remove(randomObj)
@@ -288,7 +318,7 @@ class Karteikarten(object):
                 # beantwortete Frage
                 incrementFalseIndex = type(self).incrementWrongIndex(falseIndex)
                 randomObj[3]        = incrementFalseIndex
-                
+
                 # Schreibe falsch-beantwortete Frage in 
                 # Kasten 1
                 type(self).writeBeforeCsvFile(self,randomObj)
@@ -346,11 +376,12 @@ endTime = startTime + datetime.timedelta(minutes=getStudyTime())
 
 # while True: 
 #     if datetime.datetime.utcnow() > endTime:
-#         print("Zeitlimit ist abgelaufen!")
+#         print("Zeitlimit ist abgelaufen!") 
 #         quit()
 
 kartenBox1  = []
 kartenBox2  = []
+kartenBox3  = []
 
 # k1          = Karteikarten("Box_1.csv", None, "Box_2.csv")
 # kartenBox1  =  k1.readCsvFileBox1()
@@ -361,3 +392,7 @@ print("Box 2 jetzt")
 k2          = Karteikarten("Box_2.csv", "Box_1.csv", "Box_3.csv")
 kartenbox2  = k2.readCsvFileOtherBox() 
 k2.checkOtherBoxes(kartenbox2)
+
+# # k3          = Karteikarten("Box_3.csv", "Box_1.csv", "Box_4.csv")
+# # kartenBox3  = k3.readCsvFileOtherBox()
+# # k3.checkOtherBoxes(kartenBox3)
