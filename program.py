@@ -1,5 +1,4 @@
 import datetime
-from os import write
 import random
 
 # Begruessung
@@ -101,8 +100,8 @@ class Karteikarten(object):
 
 
 
-    # Lese übergebene CSV-Datei aus
-    def readCsvFile(self,file): 
+    # Lese übergebene CSV-Datei des ersten Kastens aus
+    def readCsvFileBox_1(self,file): 
 
         # Leere Liste, der die einzelnen Daten aus der Csv Datei 
         # hinzugefuegt werden
@@ -123,30 +122,48 @@ class Karteikarten(object):
         # Gebe die Liste mit Fragen, Antworten und Fachnummer zurück
         return fragen_Antworten
 
+
+     # Lese übergebene CSV-Datei aus
+   
+    # CSV-Reader fuer andere Boxen 
+    # Unterschied: erste Zeile wird nicht uebersprungen
+    def readCsvFileOtherBoxes(self,file): 
+
+        # Leere Liste, der die einzelnen Daten aus der Csv Datei 
+        # hinzugefuegt werden
+        fragen_Antworten = []
+
+        with open(file,"r") as csv_reader:
+
+            # Lese die einzelnen Zeilen der CSV-Datei
+            for line in csv_reader: 
+
+                # Fuege die einzelnen Zeilen einer Liste hinzu.
+                # Gebe an, dass die Objekte nach Kommata getrennt werden
+                fragen_Antworten.append(line.split(","))
+
+        # Gebe die Liste mit Fragen, Antworten und Fachnummer zurück
+        return fragen_Antworten
+
     # Schreibe Listenobjekte in CSV-Datei 
     def writeCsvFile(self, obj, filename): 
 
+        
+        with open(filename, "a") as csv_writer: 
+            question    = str(obj[0]) + "," 
+            answer      = str(obj[1]) + ","
+            answerRight = str(obj[2]) + ","
+            answerWrong = str(obj[3]) + "\n"
+            csv_writer.write(question+answer+answerRight+answerWrong)
 
-        with open(filename,"a") as csv_writer: 
 
-            # Lege die Ueberschriften fest 
-            #csv_writer.write(",".join(["Fragen,Antworten","AntwortFalsch","AntwortRichtig\n"]))
-            
-            # Fuege die einzelnen Elemente in eine Reihe
-            csv_writer.write(obj[0])
-            csv_writer.write(",")
-            csv_writer.write(obj[1])
-            csv_writer.write(",")
-            csv_writer.write(str(obj[2]))
-            csv_writer.write(",")
-            csv_writer.write(str(obj[3]))
-            csv_writer.write("\n")
 
-            # # Druchlaufe die Objekte
-            # for i in liste: 
-            #     # Schreibe jeweiliges Objekt in Zeile
-            #     csv_writer.write(",".join([str(j) for j in i]))
-            #     csv_writer.write("\n")
+
+        #     # # Druchlaufe die Objekte
+        #     # for i in liste: 
+        #     #     # Schreibe jeweiliges Objekt in Zeile
+        #     #     csv_writer.write(",".join([str(j) for j in i]))
+        #     #     csv_writer.write("\n")
 
         return csv_writer
 
@@ -215,12 +232,78 @@ class Karteikarten(object):
                 # und entferne es auf dem urspuenglichen Kasten
                 liste.remove(randomObject)
                 print()
+        
+
+    def checkOtherBoxes(self, liste, writeInFile, deleteFromFile): 
+        # Zaehler fuer Listeniteration    
+        i = 0    
+
+        # Durchlaufe die Liste
+        while i< len(liste):
+                
+            # Waehle zufaelliges Objekt aus der Liste
+            randomObject  = Karteikarten.generateRandomListObject(liste)
+
+            # Index des aktuelles Elements
+            indexOfCurrenObject = liste.index(randomObject)
+
+            # Stelle Frage
+            print(randomObject[0])
+
+            # Nehme Antwort des Benutzers entgegen
+            userAnswer = input()
+
+            # Wenn die eingegebene Antwort nicht 
+            # der Richtigen entspricht
+            if userAnswer != randomObject[1]: 
+                print("Falsche Antwort")
+
+                # Inkrementiere den Zaheler fuer falsch-
+                # beantwortete Fragen
+                incrementFalseElement = Karteikarten.incrementFalseAnswerIndex(liste[indexOfCurrenObject][2])
+              
+                # Setze den aktuellen Zaehler fuer die falsch- 
+                # beantwortete Antwort auf den inkrementierten 
+                # Wert
+                liste[indexOfCurrenObject][2] = incrementFalseElement
+
+            
+                 # Fuege falsche Fragen in die Erste Box wieder ein
+                type(self).writeCsvFile(self,randomObject, "Box_1.csv") 
+
+                # Entferne die falsch beantwortete Frage aus der aktuellen Box
+                liste.remove(randomObject)
+
+                # Durchmische die Liste
+                random.shuffle(liste)
+
+                print()
+            else: 
+                print("Richtige Antwort")
+
+                # Inkrementiere den Zaheler fuer richtig-
+                # beantwortete Fragen
+                incrementTrueElement = Karteikarten.incrementTrueAnswerIndex(liste[indexOfCurrenObject][3])
 
 
+                # Setze den aktuellen Zaehler fuer die richtig- 
+                # beantwortete Antwort auf den inkrementierten 
+                # Wert
+                liste[indexOfCurrenObject][3] = incrementTrueElement
 
+                # Fuege richtig-beantwortetes Objekt in die CSV-Datei
+                # des nächsten Kastens
+                type(self).writeCsvFile(self,randomObject,writeInFile)
 
+                # Entferne es auf dem urspuenglichen Kasten
+                liste.remove(randomObject)
 
+                # Durchmische die Liste
+                random.shuffle(liste)
 
+                #type(self).deleteRowCSV(self, randomObject, deleteFromFile )
+
+                print()
 
 
 # Lernzeit
@@ -245,9 +328,9 @@ k1 = Karteikarten()
 k2 = Karteikarten()
 
 # Lese ersten Kasten aus 
-box_1 = k1.readCsvFile("Box_1.csv")
+box_1 = k1.readCsvFileBox_1("Box_1.csv")
 # Lernprozess fuer den ersten Kasten
-k1.checkAnswerBox_1(box_1, "Box_2.csv", "Box_1.csv")
+kartenbox_1 = k1.checkAnswerBox_1(box_1, "Box_2.csv", "Box_1.csv")
 
 # ------------------------------------------------------ #
 print("Moechten Sie mit der zweiten Box fortahren?")
@@ -258,9 +341,9 @@ eingabe = eingabe.lower()
 if eingabe == "ja": 
 
     # Lesen zweiten Kasten aus
-    box_2 = k2.readCsvFile("Box_2.csv") 
+    box_2 = k2.readCsvFileOtherBoxes("Box_2.csv") 
     # Lernprozess fuer den zweiten Kasten
-    #k2.checkAnswer(box_2, "Box_3.csv", "Box_1.csv")
+    kartenBox_2 = k2.checkOtherBoxes(box_2, "Box_3.csv", "Box_2.csv")    
 
 else:
     quit() 
