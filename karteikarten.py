@@ -543,7 +543,45 @@ class Karteikarten(object):
             for element in result: 
                 csv_writer.write(element)
 
+    @classmethod
+    def getStatistics(cls):
 
+        # Hole Anzahl der gestellten Fragen, 
+        # der richtig und falsch- beantworteten
+        questionresult      = []
+        askedQuestions      = 0
+        correctQuestions    = 0 
+        wrongQuestions      = 0
+
+
+        # Lese results aus
+        with open("results.csv", "r") as csv_reader:
+            csv_reader.readline()
+            for element in csv_reader: 
+                questionresult.append(element.split(","))
+
+        for question in questionresult: 
+            # Anzal der gestellten Fragen
+            askedQuestions      += int(question[1])
+
+            # Anzahl der richtigen Antworten
+            correctQuestions    += int(question[2])   
+
+            # Anzahl der falschen Antworten
+            wrongQuestions      += int(question[3])  
+
+        # Gebe prozentualen Wert des Erfolgs an
+        procent   = 11/23 * 100
+        procent   = round(procent, 2)
+
+
+        print("Anzahl der gestellten Fragen   : " + str(askedQuestions))
+        print("Anzahl der richtigen Antworten : " + str(correctQuestions))
+        print("Anzahl der falschen Antworten  : " + str(wrongQuestions))
+        print(str(procent)+ "% wurden richtig beantwortet")
+        print()
+
+        
 # Nehme die Lernzeit des Benutzers entgegen
 def getStudyTime(): 
     # Zeiteingabe des Benutzers
@@ -612,10 +650,10 @@ kartenBox5  = []
 # kartenbox2  = k2.readCsvFileOtherBox() 
 # k2.checkOtherBoxes(kartenbox2)
 
-print("Box 3 jetzt")
-k3          = Karteikarten("Box_3.csv", "Box_1.csv", "Box_4.csv", "KartenBox3")
-kartenBox3  = k3.readCsvFileOtherBox()
-k3.checkOtherBoxes(kartenBox3)
+# print("Box 3 jetzt")
+# k3          = Karteikarten("Box_3.csv", "Box_1.csv", "Box_4.csv", "KartenBox3")
+# kartenBox3  = k3.readCsvFileOtherBox()
+# k3.checkOtherBoxes(kartenBox3)
 
 # print("Box 4 Jetzt")
 # k4          = Karteikarten("Box_4.csv", "Box_1.csv", "Box_5.csv", "KartenBox4")
@@ -630,3 +668,5 @@ k3.checkOtherBoxes(kartenBox3)
 # print("Alle Fragen wurden beantwortet!")
 # print("Hier ist ihre Statistik")
 # quit()
+
+Karteikarten.getStatistics()
