@@ -4,14 +4,14 @@ import random
 
 class Karteikarten(object):
 
-
     # Ubergebe aktuelle CSV
     #          Kasten 1
     #          Naechster Kasten 
-    def __init__(self, file, fileBefore, fileNext): 
-        self._file          = file
-        self._fileBefore    = fileBefore
-        self._fileNext      = fileNext   
+    def __init__(self, file, fileBefore, fileNext, resultName): 
+        self._file              = file
+        self._fileBefore        = fileBefore
+        self._fileNext          = fileNext 
+        self._resultName        = resultName
 
     # Lese ersten Kasten aus
     # Hierbei wird Ueberschrift ignoriert
@@ -150,8 +150,6 @@ class Karteikarten(object):
             for element in kasten: 
                 csv_writer.write(element)
 
-
-
     # Frage
     def getQuestion(obj):  
         
@@ -192,7 +190,6 @@ class Karteikarten(object):
         str(indexObj)
         return indexObj 
 
-
     # Erhoehe Index fuer falsche Antwort
     def incrementWrongIndex(index): 
         indexObj = int(index)
@@ -226,6 +223,13 @@ class Karteikarten(object):
         # Zaehler fuer Listeniteration    
         i = 0   
 
+        # Zaehle Anzahl der Fragen
+        # sowie richtige und falsche Antworten
+        counterQuestions    = 0
+        counterRightAnswer  = 0
+        counterWrongAnswer  = 0
+        result              = []
+
         while i< len(liste): 
             # Waehle zufaellige Frage
             randomObj = type(self).randomQuestion(liste)
@@ -236,9 +240,13 @@ class Karteikarten(object):
             # Hole die Frage
             question  = str(type(self).getQuestion(randomObj))
             
-            # Anzahl fuer korrekt-beantwortet
+            # Anzahl fuer korrekt-beantwortet fuer Objekt
             correctIndex = type(self).getCorrectIndex(randomObj)
-            
+
+            # Erhoehe den Zaehler, um herauszufinden, 
+            # wie viele Fragen gestellt worden sind
+            counterQuestions += 1
+
             # Anzahl fuer falsch-beantwortet
             falseIndex  = type(self).getWrongIndex(randomObj)
 
@@ -254,9 +262,15 @@ class Karteikarten(object):
                 print("Richtige Antwort!")
 
                 # Erhoehe den Zaehler fuer die richtig-
-                # beantwortete Frage
+                # beantwortete Frage fuer Objekt
                 incrementTrueIndex    = type(self).incrementCorrectIndex(correctIndex)
                 randomObj[2]          = incrementTrueIndex
+
+
+                # Erhoehe den Zaehler, um herauszufinden, 
+                # wie viele Fragen richtig beantwortet worden sind
+                counterRightAnswer +=1
+
 
                 # Fuege richtig-beantwortetes Objekt in die CSV-Datei
                 # des zweiten Kastens
@@ -277,9 +291,13 @@ class Karteikarten(object):
                 print("Falsche Antwort!")
 
                 # Erhoehe den Zaehler fuer die falsch-
-                # beantwortete Frage
+                # beantwortete Frage fuer Objekt
                 incrementFalseIndex = type(self).incrementWrongIndex(falseIndex)
                 randomObj[3]        = incrementFalseIndex
+
+                # Erhoehe den Zaehler, um herauszufinden, 
+                # wie viele Fragen falsch beantwortet worden sind
+                counterWrongAnswer += 1
 
                 # Update die Elemente in der Csv-Datei in 
                 # Box 1
@@ -287,8 +305,16 @@ class Karteikarten(object):
 
                 print()
 
+
+        # Anzahl der gestellten Fragen und 
+        # richtig und falsch beatworteten 
+        result  = [self._resultName, str(counterQuestions), str(counterRightAnswer), str(counterRightAnswer)+ "\n"]
+        type(self).getResultsCSV(result)
+        
+
     # Lernprozess fuer Boxen 2 - 4
     def checkOtherBoxes(self, liste):
+
         # Zaehler fuer Listeniteration    
         i = 0   
 
@@ -361,7 +387,7 @@ class Karteikarten(object):
                 random.shuffle(liste)
 
                 print()
-
+        
     # Lernprozess fuer Box 5 
     def checkBox5(self, liste):
          # Zaehler fuer Listeniteration    
@@ -432,17 +458,43 @@ class Karteikarten(object):
                 random.shuffle(liste)
 
                 print()
+    
+    # CSV-Datei, in der die Ergebnisse stehen
+    @staticmethod
+    def getResultsCSV(obj): 
+
+        result = []
+
+        question        = str(obj[0]) + ","
+        answer          = str(obj[1]) + ","
+        answerRight     = str(obj[2]) + ","
+        answerWrong     = str(obj[3]) 
+        sumQuestions    = question+answer+answerRight+answerWrong
 
 
+        with open("results.csv", "r") as csv_reader: 
+           
+            # Loesche das vorherige Element 
+            # damit Dupliakte vermieden werden
+            for row in csv_reader: 
+
+                # Loesche alte Daten
+                if obj[0] in row: 
+                    del(row)
+                else:
+                    # Behalte die anderen Zeilen bei
+                    result.append(row)
+
+            # Speichere neue Daten zwischen
+            result.append(sumQuestions)
+
+        # Fuege Neue Daten in CSV
+        with open("results.csv", "w") as csv_writer: 
+            for element in result: 
+                csv_writer.write(element)
 
 
-# Begruessung   
-print()
-print("Wilkommen zum Lernprogramm")
-print("Bitte beachte die Gross,- und Kleinschreibung")
-print("Wie viele Minuten wollen Sie lernen?")
-
-
+# Nehme die Lernzeit des Benutzers entgegen
 def getStudyTime(): 
     # Zeiteingabe des Benutzers
     userTime = input()       
@@ -468,6 +520,15 @@ def getStudyTime():
     return input_Time
 
 
+# Begruessung   
+print()
+print("Wilkommen zum Lernprogramm")
+print("Bitte beachte die Gross,- und Kleinschreibung")
+print("Wie viele Minuten wollen Sie lernen?")
+
+
+
+
  # Aktuelle Zeit im utc Format
 startTime = datetime.datetime.utcnow()
 
@@ -476,42 +537,46 @@ startTime = datetime.datetime.utcnow()
 endTime = startTime + datetime.timedelta(minutes=getStudyTime())
 
 
-
-# while True: 
-#     if datetime.datetime.utcnow() > endTime:
-#         print("Zeitlimit ist abgelaufen!") 
-#         quit()
-
+# Listen, die die ausgelesenen Csv-Dateien darstellen
 kartenBox1  = []
 kartenBox2  = []
 kartenBox3  = []
 kartenBox4  = []
 kartenBox5  = []
 
-# print("Box 1 jetzt")
-# k1          = Karteikarten("Box_1.csv", None, "Box_2.csv")
-# kartenBox1  =  k1.readCsvFileBox1()
-# k1.checkBox1(kartenBox1)
+
+
+# if datetime.datetime.utcnow() > endTime:
+    # pass 
+    # print("Zeitlimit ist abgelaufen!") 
+
+# 
+
+print("Box 1 jetzt")
+k1          = Karteikarten("Box_1.csv", None, "Box_2.csv", "KartenBox 1")
+kartenBox1  =  k1.readCsvFileBox1()
+k1.checkBox1(kartenBox1)
 
 # print("Box 2 jetzt")
-# k2          = Karteikarten("Box_2.csv", "Box_1.csv", "Box_3.csv")
+# k2          = Karteikarten("Box_2.csv", "Box_1.csv", "Box_3.csv", "KartenBox 2")
 # kartenbox2  = k2.readCsvFileOtherBox() 
 # k2.checkOtherBoxes(kartenbox2)
 
 # print("Box 3 jetzt")
-# k3          = Karteikarten("Box_3.csv", "Box_1.csv", "Box_4.csv")
+# k3          = Karteikarten("Box_3.csv", "Box_1.csv", "Box_4.csv", "KartenBox 3")
 # kartenBox3  = k3.readCsvFileOtherBox()
 # k3.checkOtherBoxes(kartenBox3)
 
 # print("Box 4 Jetzt")
-# k4          = Karteikarten("Box_4.csv", "Box_1.csv", "Box_5.csv")
+# k4          = Karteikarten("Box_4.csv", "Box_1.csv", "Box_5.csv", "KartenBox 4")
 # kartenBox4  = k4.readCsvFileOtherBox()
 # k4.checkOtherBoxes(kartenBox4)
 
-print("Box 5 jetzt")
-k5          = Karteikarten("Box_5.csv", "Box_1.csv", None)
-kartenBox5  = k5.readCsvFileOtherBox()
-k5.checkBox5(kartenBox5)
+# print("Box 5 jetzt")
+# k5          = Karteikarten("Box_5.csv", "Box_1.csv", None, "KartenBox 5")
+# kartenBox5  = k5.readCsvFileOtherBox()
+# k5.checkBox5(kartenBox5)
 
-print("Alle Fragen wurden beantwortet!")
-print("Hier ist ihre Statistik")
+# print("Alle Fragen wurden beantwortet!")
+# print("Hier ist ihre Statistik")
+# quit()
