@@ -308,15 +308,22 @@ class Karteikarten(object):
 
         # Anzahl der gestellten Fragen und 
         # richtig und falsch beatworteten 
-        result  = [self._resultName, str(counterQuestions), str(counterRightAnswer), str(counterRightAnswer)+ "\n"]
+        result  = [self._resultName, str(counterQuestions), str(counterRightAnswer), str(counterWrongAnswer)+ "\n"]
         type(self).getResultsCSV(result)
         
-
     # Lernprozess fuer Boxen 2 - 4
     def checkOtherBoxes(self, liste):
 
         # Zaehler fuer Listeniteration    
         i = 0   
+
+        # Zaehle Anzahl der Fragen
+        # sowie richtige und falsche Antworten
+        counterQuestions    = 0
+        counterRightAnswer  = 0
+        counterWrongAnswer  = 0
+        result              = []
+
 
         while i< len(liste): 
             # Waehle zufaellige Frage
@@ -330,6 +337,10 @@ class Karteikarten(object):
             
             # Anzahl fuer korrekt-beantwortet
             correctIndex = type(self).getCorrectIndex(randomObj)
+
+            # Erhoehe den Zaehler, um herauszufinden, 
+            # wie viele Fragen gestellt worden sind
+            counterQuestions += 1
             
             # Anzahl fuer falsch-beantwortet
             falseIndex  = type(self).getWrongIndex(randomObj)
@@ -349,6 +360,11 @@ class Karteikarten(object):
                 # beantwortete Frage
                 incrementTrueIndex    = type(self).incrementCorrectIndex(correctIndex)
                 randomObj[2]          = incrementTrueIndex
+
+
+                # Erhoehe den Zaehler, um herauszufinden, 
+                # wie viele Fragen richtig beantwortet worden sind
+                counterRightAnswer +=1
 
                 # Fuege richtig-beantwortetes Objekt in die CSV-Datei
                 # des naechsten Kastens
@@ -373,6 +389,10 @@ class Karteikarten(object):
                 incrementFalseIndex = type(self).incrementWrongIndex(falseIndex)
                 randomObj[3]        = incrementFalseIndex
 
+                # Erhoehe den Zaehler, um herauszufinden, 
+                # wie viele Fragen falsch beantwortet worden sind
+                counterWrongAnswer += 1
+
                 # Schreibe falsch-beantwortete Frage in 
                 # Kasten 1
                 type(self).writeBeforeCsvFile(self,randomObj)
@@ -387,6 +407,11 @@ class Karteikarten(object):
                 random.shuffle(liste)
 
                 print()
+        
+        # Anzahl der gestellten Fragen und 
+        # richtig und falsch beatworteten 
+        result  = [self._resultName, str(counterQuestions), str(counterRightAnswer), str(counterWrongAnswer)+ "\n"]
+        type(self).getResultsCSV(result)
         
     # Lernprozess fuer Box 5 
     def checkBox5(self, liste):
@@ -477,8 +502,7 @@ class Karteikarten(object):
             # Loesche das vorherige Element 
             # damit Dupliakte vermieden werden
             for row in csv_reader: 
-
-                # Loesche alte Daten
+                
                 if obj[0] in row: 
                     del(row)
                 else:
@@ -487,10 +511,11 @@ class Karteikarten(object):
 
             # Speichere neue Daten zwischen
             result.append(sumQuestions)
-
+              
         # Fuege Neue Daten in CSV
         with open("results.csv", "w") as csv_writer: 
             for element in result: 
+                print(element)
                 csv_writer.write(element)
 
 
@@ -552,25 +577,25 @@ kartenBox5  = []
 
 # 
 
-print("Box 1 jetzt")
-k1          = Karteikarten("Box_1.csv", None, "Box_2.csv", "KartenBox 1")
-kartenBox1  =  k1.readCsvFileBox1()
-k1.checkBox1(kartenBox1)
+# print("Box 1 jetzt")
+# k1          = Karteikarten("Box_1.csv", None, "Box_2.csv", "KartenBox1")
+# kartenBox1  =  k1.readCsvFileBox1()
+# k1.checkBox1(kartenBox1)
 
 # print("Box 2 jetzt")
-# k2          = Karteikarten("Box_2.csv", "Box_1.csv", "Box_3.csv", "KartenBox 2")
+# k2          = Karteikarten("Box_2.csv", "Box_1.csv", "Box_3.csv", "KartenBox2")
 # kartenbox2  = k2.readCsvFileOtherBox() 
 # k2.checkOtherBoxes(kartenbox2)
 
 # print("Box 3 jetzt")
-# k3          = Karteikarten("Box_3.csv", "Box_1.csv", "Box_4.csv", "KartenBox 3")
+# k3          = Karteikarten("Box_3.csv", "Box_1.csv", "Box_4.csv", "KartenBox3")
 # kartenBox3  = k3.readCsvFileOtherBox()
 # k3.checkOtherBoxes(kartenBox3)
 
-# print("Box 4 Jetzt")
-# k4          = Karteikarten("Box_4.csv", "Box_1.csv", "Box_5.csv", "KartenBox 4")
-# kartenBox4  = k4.readCsvFileOtherBox()
-# k4.checkOtherBoxes(kartenBox4)
+print("Box 4 Jetzt")
+k4          = Karteikarten("Box_4.csv", "Box_1.csv", "Box_5.csv", "KartenBox 4")
+kartenBox4  = k4.readCsvFileOtherBox()
+k4.checkOtherBoxes(kartenBox4)
 
 # print("Box 5 jetzt")
 # k5          = Karteikarten("Box_5.csv", "Box_1.csv", None, "KartenBox 5")
