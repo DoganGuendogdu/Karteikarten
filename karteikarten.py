@@ -1,6 +1,6 @@
 import datetime
 import random
-
+import csv
 
 class Karteikarten(object):
 
@@ -571,7 +571,7 @@ class Karteikarten(object):
             wrongQuestions      += int(question[3])  
 
         # Gebe prozentualen Wert des Erfolgs an
-        procent   = 11/23 * 100
+        procent   = correctQuestions/askedQuestions * 100
         procent   = round(procent, 2)
 
 
@@ -580,6 +580,7 @@ class Karteikarten(object):
         print("Anzahl der falschen Antworten  : " + str(wrongQuestions))
         print(str(procent)+ "% wurden richtig beantwortet")
         print()
+
 
         
 # Nehme die Lernzeit des Benutzers entgegen
@@ -640,33 +641,36 @@ kartenBox5  = []
 
 # 
 
-# print("Box 1 jetzt")
-# k1          = Karteikarten("Box_1.csv", None, "Box_2.csv", "KartenBox1")
-# kartenBox1  =  k1.readCsvFileBox1()
-# k1.checkBox1(kartenBox1)
+print("Box 1 jetzt")
+k1          = Karteikarten("Box_1.csv", None, "Box_2.csv", "KartenBox1")
+kartenBox1  =  k1.readCsvFileBox1()
+k1.checkBox1(kartenBox1)
 
-# print("Box 2 jetzt")
-# k2          = Karteikarten("Box_2.csv", "Box_1.csv", "Box_3.csv", "KartenBox2")
-# kartenbox2  = k2.readCsvFileOtherBox() 
-# k2.checkOtherBoxes(kartenbox2)
+print("Box 2 jetzt")
+k2          = Karteikarten("Box_2.csv", "Box_1.csv", "Box_3.csv", "KartenBox2")
+kartenbox2  = k2.readCsvFileOtherBox() 
+k2.checkOtherBoxes(kartenbox2)
 
-# print("Box 3 jetzt")
-# k3          = Karteikarten("Box_3.csv", "Box_1.csv", "Box_4.csv", "KartenBox3")
-# kartenBox3  = k3.readCsvFileOtherBox()
-# k3.checkOtherBoxes(kartenBox3)
+print("Box 3 jetzt")
+k3          = Karteikarten("Box_3.csv", "Box_1.csv", "Box_4.csv", "KartenBox3")
+kartenBox3  = k3.readCsvFileOtherBox()
+k3.checkOtherBoxes(kartenBox3)
 
-# print("Box 4 Jetzt")
-# k4          = Karteikarten("Box_4.csv", "Box_1.csv", "Box_5.csv", "KartenBox4")
-# kartenBox4  = k4.readCsvFileOtherBox()
-# k4.checkOtherBoxes(kartenBox4)
+print("Box 4 Jetzt")
+k4          = Karteikarten("Box_4.csv", "Box_1.csv", "Box_5.csv", "KartenBox4")
+kartenBox4  = k4.readCsvFileOtherBox()
+k4.checkOtherBoxes(kartenBox4)
 
-# print("Box 5 jetzt")
-# k5          = Karteikarten("Box_5.csv", "Box_1.csv", None, "KartenBox5")
-# kartenBox5  = k5.readCsvFileOtherBox()
-# k5.checkBox5(kartenBox5)
+print("Box 5 jetzt")
+k5          = Karteikarten("Box_5.csv", "Box_1.csv", None, "KartenBox5")
+kartenBox5  = k5.readCsvFileOtherBox()
+k5.checkBox5(kartenBox5)
 
-# print("Alle Fragen wurden beantwortet!")
-# print("Hier ist ihre Statistik")
-# quit()
+print("Alle Fragen wurden beantwortet!")
+print("Hier ist ihre Statistik")
+
 
 Karteikarten.getStatistics()
+
+
+quit()
