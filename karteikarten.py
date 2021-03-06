@@ -1,4 +1,5 @@
 import datetime
+from os import replace
 import random
 import csv
 
@@ -108,29 +109,28 @@ class Karteikarten(object):
 
 
         with open(self._file, "r") as csv_reader: 
+
            
             # Loesche das vorherige Element aus Kasten 1, 
             # damit Dupliakte vermieden werden
             for row in csv_reader: 
                 
-                # # Uerberlese die Uerbschrift
-                # if "Frage" in row: 
-                #     continue
-
-                # Loesche alte Daten
-                if obj[0] in row: 
-                    del(row)
+                # Lösche die alten Daten und aktualiere mit neuen Daten
+                if obj[0] in row:
+                    del(row) 
+                    kasten1.append(result)
                 else:
                     # Behalte die anderen Zeilen bei
                     kasten1.append(row)
 
-            # Speichere neue Daten zwischen
-            kasten1.append(result)
 
         # Fuege Neue Daten in Kasten 1
         with open(self._file, "w") as csv_writer: 
             for element in kasten1: 
                 csv_writer.write(element)
+
+
+        
         
     # Wenn Frage richtig ODER falsch beantwortet worden ist, 
     # so loesche es aus der aktuellen Box,
@@ -646,31 +646,31 @@ k1          = Karteikarten("Box_1.csv", None, "Box_2.csv", "KartenBox1")
 kartenBox1  =  k1.readCsvFileBox1()
 k1.checkBox1(kartenBox1)
 
-print("Box 2 jetzt")
-k2          = Karteikarten("Box_2.csv", "Box_1.csv", "Box_3.csv", "KartenBox2")
-kartenbox2  = k2.readCsvFileOtherBox() 
-k2.checkOtherBoxes(kartenbox2)
+# print("Box 2 jetzt")
+# k2          = Karteikarten("Box_2.csv", "Box_1.csv", "Box_3.csv", "KartenBox2")
+# kartenbox2  = k2.readCsvFileOtherBox() 
+# k2.checkOtherBoxes(kartenbox2)
 
-print("Box 3 jetzt")
-k3          = Karteikarten("Box_3.csv", "Box_1.csv", "Box_4.csv", "KartenBox3")
-kartenBox3  = k3.readCsvFileOtherBox()
-k3.checkOtherBoxes(kartenBox3)
+# print("Box 3 jetzt")
+# k3          = Karteikarten("Box_3.csv", "Box_1.csv", "Box_4.csv", "KartenBox3")
+# kartenBox3  = k3.readCsvFileOtherBox()
+# k3.checkOtherBoxes(kartenBox3)
 
-print("Box 4 Jetzt")
-k4          = Karteikarten("Box_4.csv", "Box_1.csv", "Box_5.csv", "KartenBox4")
-kartenBox4  = k4.readCsvFileOtherBox()
-k4.checkOtherBoxes(kartenBox4)
+# print("Box 4 Jetzt")
+# k4          = Karteikarten("Box_4.csv", "Box_1.csv", "Box_5.csv", "KartenBox4")
+# kartenBox4  = k4.readCsvFileOtherBox()
+# k4.checkOtherBoxes(kartenBox4)
 
-print("Box 5 jetzt")
-k5          = Karteikarten("Box_5.csv", "Box_1.csv", None, "KartenBox5")
-kartenBox5  = k5.readCsvFileOtherBox()
-k5.checkBox5(kartenBox5)
+# print("Box 5 jetzt")
+# k5          = Karteikarten("Box_5.csv", "Box_1.csv", None, "KartenBox5")
+# kartenBox5  = k5.readCsvFileOtherBox()
+# k5.checkBox5(kartenBox5)
 
-print("Alle Fragen wurden beantwortet!")
-print("Hier ist ihre Statistik")
+# print("Alle Fragen wurden beantwortet!")
+# print("Hier ist ihre Statistik")
 
 
-Karteikarten.getStatistics()
+# Karteikarten.getStatistics()
 
 
 quit()
