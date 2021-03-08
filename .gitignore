@@ -1,6 +1,11 @@
 
 # ignore following files # 
 
-/karteikarten.py
 /.vscode/.ropeproject/config.py
 /.vscode/.ropeproject/objectdb
+Box_2.csv
+Box_3.csv
+Box_4.csv
+Box_5.csv
+/program.py
+Box_2.csv

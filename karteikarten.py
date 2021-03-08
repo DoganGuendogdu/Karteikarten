@@ -129,9 +129,6 @@ class Karteikarten(object):
             for element in kasten1: 
                 csv_writer.write(element)
 
-
-        
-        
     # Wenn Frage richtig ODER falsch beantwortet worden ist, 
     # so loesche es aus der aktuellen Box,
     # da diese in die naechste ODER vorherige uebergeht
@@ -524,24 +521,25 @@ class Karteikarten(object):
 
 
         with open("results.csv", "r") as csv_reader: 
+
            
-            # Loesche das vorherige Element 
-            # damit Dupliakte vermieden werden
             for row in csv_reader: 
                 
-                if obj[0] in row: 
-                    del(row)
+                # Lösche die alten Daten und aktualiere mit neuen Daten
+                if obj[0] in row:
+                    del(row) 
+                    result.append(sumQuestions)
                 else:
                     # Behalte die anderen Zeilen bei
                     result.append(row)
 
-            # Speichere neue Daten zwischen
-            result.append(sumQuestions)
-              
-        # Fuege Neue Daten in CSV
+
+        # Fuege Datein in results.csv ein
         with open("results.csv", "w") as csv_writer: 
             for element in result: 
                 csv_writer.write(element)
+
+
 
     @classmethod
     def getStatistics(cls):
@@ -571,14 +569,21 @@ class Karteikarten(object):
             wrongQuestions      += int(question[3])  
 
         # Gebe prozentualen Wert des Erfolgs an
-        procent   = correctQuestions/askedQuestions * 100
-        procent   = round(procent, 2)
+        procent = 0
+        try:
+            procent   = correctQuestions/askedQuestions * 100
+            procent   = round(procent, 2)
+        except ZeroDivisionError:
+            print("Es sind keine Fragen mehr uebrig")
+            print("Bitte neue Fragen in Box 1 hinzufuegen")
+            quit()
 
-
+        print("Alle Fragen wurden beantwortet!")
+        print("Hier ist ihre Statistik")
         print("Anzahl der gestellten Fragen   : " + str(askedQuestions))
         print("Anzahl der richtigen Antworten : " + str(correctQuestions))
         print("Anzahl der falschen Antworten  : " + str(wrongQuestions))
-        print(str(procent)+ "% wurden richtig beantwortet")
+        print(str(procent)+ "% der Fragen wurden richtig beantwortet")
         print()
 
 
@@ -646,31 +651,29 @@ k1          = Karteikarten("Box_1.csv", None, "Box_2.csv", "KartenBox1")
 kartenBox1  =  k1.readCsvFileBox1()
 k1.checkBox1(kartenBox1)
 
-# print("Box 2 jetzt")
-# k2          = Karteikarten("Box_2.csv", "Box_1.csv", "Box_3.csv", "KartenBox2")
-# kartenbox2  = k2.readCsvFileOtherBox() 
-# k2.checkOtherBoxes(kartenbox2)
+print("Box 2 jetzt")
+k2          = Karteikarten("Box_2.csv", "Box_1.csv", "Box_3.csv", "KartenBox2")
+kartenbox2  = k2.readCsvFileOtherBox() 
+k2.checkOtherBoxes(kartenbox2)
 
-# print("Box 3 jetzt")
-# k3          = Karteikarten("Box_3.csv", "Box_1.csv", "Box_4.csv", "KartenBox3")
-# kartenBox3  = k3.readCsvFileOtherBox()
-# k3.checkOtherBoxes(kartenBox3)
+print("Box 3 jetzt")
+k3          = Karteikarten("Box_3.csv", "Box_1.csv", "Box_4.csv", "KartenBox3")
+kartenBox3  = k3.readCsvFileOtherBox()
+k3.checkOtherBoxes(kartenBox3)
 
-# print("Box 4 Jetzt")
-# k4          = Karteikarten("Box_4.csv", "Box_1.csv", "Box_5.csv", "KartenBox4")
-# kartenBox4  = k4.readCsvFileOtherBox()
-# k4.checkOtherBoxes(kartenBox4)
+print("Box 4 Jetzt")
+k4          = Karteikarten("Box_4.csv", "Box_1.csv", "Box_5.csv", "KartenBox4")
+kartenBox4  = k4.readCsvFileOtherBox()
+k4.checkOtherBoxes(kartenBox4)
 
-# print("Box 5 jetzt")
-# k5          = Karteikarten("Box_5.csv", "Box_1.csv", None, "KartenBox5")
-# kartenBox5  = k5.readCsvFileOtherBox()
-# k5.checkBox5(kartenBox5)
-
-# print("Alle Fragen wurden beantwortet!")
-# print("Hier ist ihre Statistik")
+print("Box 5 jetzt")
+k5          = Karteikarten("Box_5.csv", "Box_1.csv", None, "KartenBox5")
+kartenBox5  = k5.readCsvFileOtherBox()
+k5.checkBox5(kartenBox5)
 
 
-# Karteikarten.getStatistics()
+
+Karteikarten.getStatistics()
 
 
 quit()
