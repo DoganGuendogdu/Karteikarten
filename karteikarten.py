@@ -1,7 +1,9 @@
 import datetime
+from os import path
 import random
 import csv
 import os
+import pathlib
 import userInput 
 
 
@@ -32,13 +34,12 @@ class Karteikarten(object):
             # Gebe an, dass die Objekte nach Kommata getrennt werden
              obj.append(line.split(","))
 
-             print(line)
-
-        print(obj)
-
+        # Schliesse die eingelesene Datei
+        self._selectedFile.close()
 
         # Liste der CSV, die aktuell ausgelesen wurde
         return obj
+    
 
     # Lese andere Kaesten aus
     # Hierbei haben diese keine Uberschrift
@@ -104,22 +105,20 @@ class Karteikarten(object):
     # so muss die Csv-Datei dementsprechend geupdatet werden
     def updateFileWrongAnswersBox1(self, obj): 
         kasten1 = []   
-
+        
         question    = str(obj[0]) + ","
         answer      = str(obj[1]) + ","
         answerRight = str(obj[2]) + ","
         answerWrong = str(obj[3]) 
         result      = question+answer+answerRight+answerWrong
 
-
-        with open(self._file, "r") as csv_reader: 
-
-           
-            # Loesche das vorherige Element aus Kasten 1, 
-            # damit Dupliakte vermieden werden
-            for row in csv_reader: 
-                
-                # Lösche die alten Daten und aktualiere mit neuen Daten
+        # Hole die Absolute Adresse der eingelesenen Datei
+        file = self._selectedFile.name
+        
+        # Loesche das vorherige Element aus Kasten 1, 
+        # damit Dupliakte vermieden werden
+        with open(file, "r") as csv_reader: 
+            for row in csv_reader:
                 if obj[0] in row:
                     del(row) 
                     kasten1.append(result)
@@ -128,11 +127,12 @@ class Karteikarten(object):
                     kasten1.append(row)
 
 
-        # Fuege Neue Daten in Kasten 1
-        with open(self._file, "w") as csv_writer: 
+        # Fuege Neue aktualisierte Daten in Kasten 1
+        with open(file, "w") as csv_writer: 
             for element in kasten1: 
                 csv_writer.write(element)
-
+        
+    
     # Wenn Frage richtig ODER falsch beantwortet worden ist, 
     # so loesche es aus der aktuellen Box,
     # da diese in die naechste ODER vorherige uebergeht
@@ -251,7 +251,7 @@ class Karteikarten(object):
             # Anzahl fuer falsch-beantwortet
             falseIndex  = type(self).getWrongIndex(randomObj)
 
-            # Stelle die FrageWFMwAc2MaEb6LA
+            # Stelle die Frage
             type(self).printQuestion(question)
 
             # Nehme Antwort des Users entgegen
@@ -616,9 +616,6 @@ def getStudyTime():
 
     return input_Time
 
-# Nehme Csv-Datei des Users entgegen
-def getCsvFileUser():
-   return filedialog.askopenfilename()
 
 
 
