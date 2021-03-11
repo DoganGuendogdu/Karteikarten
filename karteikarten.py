@@ -3,6 +3,14 @@ import random
 
 class Karteikarten(object):
 
+
+    # Klassenvariablen, um Statistik zu erstellen
+    # Klassenvariablen, da Instanz-unabhaengig
+    counterQuestions    = 0
+    counterRightAnswer  = 0
+    counterWrongAnswer  = 0
+    result              = []
+
     # Konstruktor
     def __init__(self, box1, currentBox, nextBox):
         self.__box1         = box1
@@ -194,19 +202,13 @@ class Karteikarten(object):
             for line in csv_reader:
                 box1.append(line)
 
-        # Zaehle Anzahl der Fragen
-        # sowie richtige und falsche Antworten
-        counterQuestions    = 0
-        counterRightAnswer  = 0
-        counterWrongAnswer  = 0
-        result              = []
 
         i       = 0
         while(i < len(box1)):
             
             # Erhoehe den Zaehler, um herauszufinden, 
             # wie viele Fragen gestellt worden sind
-            counterQuestions += 1
+            Karteikarten.counterQuestions += 1
 
             # Waehle zufaellige Frage
             randomObject = random.choice(box1)
@@ -231,6 +233,9 @@ class Karteikarten(object):
 
             # Wenn Antwort richtig
             if userAnswer == answer:
+                
+                # Erhoehe globalen Zaehler fur richtige Frage
+                Karteikarten.counterRightAnswer += 1
 
                 print("Richtige Antwort!")
 
@@ -255,6 +260,10 @@ class Karteikarten(object):
                 random.shuffle(box1)
                 print()
             else:
+
+                # Erhoehe globalen Zaehler fur falsche Frage
+                Karteikarten.counterWrongAnswer += 1
+
                 print("Falsche Antwort")
 
                 # Erhoehe den Zaehler, um herauszufinden, 
@@ -285,19 +294,13 @@ class Karteikarten(object):
             for line in csv_reader:
                 box.append(line)
 
-        # Zaehle Anzahl der Fragen
-        # sowie richtige und falsche Antworten
-        counterQuestions    = 0
-        counterRightAnswer  = 0
-        counterWrongAnswer  = 0
-        result              = []
 
         i       = 0
         while(i < len(box)):
             
             # Erhoehe den Zaehler, um herauszufinden, 
             # wie viele Fragen gestellt worden sind
-            counterQuestions += 1
+            Karteikarten.counterQuestions += 1
 
             # Waehle zufaellige Frage
             randomObject = random.choice(box)
@@ -322,6 +325,9 @@ class Karteikarten(object):
 
             # Wenn Antwort richtig
             if userAnswer == answer:
+                
+                # Erhoehe globalen Zaehler fur richtige Frage
+                Karteikarten.counterRightAnswer += 1
 
                 print("Richtige Antwort!")
 
@@ -346,6 +352,10 @@ class Karteikarten(object):
                 random.shuffle(box)
                 print()
             else:
+
+                # Erhoehe globalen Zaehler fur falsche Frage
+                Karteikarten.counterWrongAnswer += 1
+
                 print("Falsche Antwort")
 
                 # Erhoehe den Zaehler, um herauszufinden, 
@@ -381,19 +391,13 @@ class Karteikarten(object):
             for line in csv_reader:
                 box.append(line)
 
-        # Zaehle Anzahl der Fragen
-        # sowie richtige und falsche Antworten
-        counterQuestions    = 0
-        counterRightAnswer  = 0
-        counterWrongAnswer  = 0
-        result              = []
 
         i       = 0
         while(i < len(box)):
             
             # Erhoehe den Zaehler, um herauszufinden, 
             # wie viele Fragen gestellt worden sind
-            counterQuestions += 1
+            Karteikarten.counterQuestions += 1
 
             # Waehle zufaellige Frage
             randomObject = random.choice(box)
@@ -419,6 +423,9 @@ class Karteikarten(object):
             # Wenn Antwort richtig
             if userAnswer == answer:
 
+                # Erhoehe globalen Zaehler fur richtige Frage
+                Karteikarten.counterRightAnswer += 1
+
                 print("Richtige Antwort!")
 
                 # Erhoehe den Zaehler, um herauszufinden, 
@@ -439,6 +446,10 @@ class Karteikarten(object):
                 random.shuffle(box)
                 print()
             else:
+                
+                # Erhoehe globalen Zaehler fur falsche Frage
+                Karteikarten.counterWrongAnswer += 1
+
                 print("Falsche Antwort")
 
                 # Erhoehe den Zaehler, um herauszufinden, 
@@ -460,4 +471,26 @@ class Karteikarten(object):
 
                 random.shuffle(box)
                 print()
-        
+    
+    # gebe Anzahl gestellter Fragen,
+    # richtig und falsch beantworteter aus
+    @classmethod
+    def getStatistics(cls):
+
+        counterQuestions    = Karteikarten.counterQuestions
+        counterAnswerRight  = Karteikarten.counterRightAnswer
+        counterAnswerFalse  = Karteikarten.counterWrongAnswer
+
+        # prozentuale Auswertung der Statistik
+        procent = 0
+        try:
+            procent = counterAnswerRight/counterQuestions * 100
+            procent = round(procent, 2)
+        except ZeroDivisionError as AllAnswersWrong:
+            print("Es wurde KEINE Frage richtig beantwortet!")
+            quit()
+
+        print("Anzahl gestellter Fragen      : "+ str(counterQuestions))
+        print("Anzahl der richtigen Antworten: "+ str(counterAnswerRight))
+        print("Anzahl der falschen Antworten : "+ str(counterAnswerFalse))
+        print(str(procent)+ "% der Fragen wurden richtig beantwortet")
