@@ -472,8 +472,14 @@ class Karteikarten(object):
                 random.shuffle(box)
                 print()
     
+
+
+
+    # Statistics
+    #----------------------------------------------------------------------#
+
     # gebe Anzahl gestellter Fragen,
-    # richtig und falsch beantworteter aus
+    # richtig und falsch beantworteter nach jeweiliger Session aus
     @classmethod
     def getStatistics(cls):
 
@@ -494,3 +500,69 @@ class Karteikarten(object):
         print("Anzahl der richtigen Antworten: "+ str(counterAnswerRight))
         print("Anzahl der falschen Antworten : "+ str(counterAnswerFalse))
         print(str(procent)+ "% der Fragen wurden richtig beantwortet")
+
+    # Lese die einzelnen Csv-Dateien aus,
+    # um herauszufinden, wie viele Fragen
+    # in den Boxen sind
+    def getResultBoxes(self,kasten1):
+
+        # Listen, in denen der Inhalt der einzelnen 
+        # Csv Dateien gespeichert wird
+        box1 = []
+        box2 = []
+        box3 = []
+        box4 = []
+        box5 = []
+
+        # Box 1
+        fileBox1 = kasten1.name
+
+        # Lese Box 1 aus und speichere in 
+        # gleichnamiger Liste
+        with open(fileBox1, "r") as csv_file: 
+            csv_reader = csv.reader(csv_file)
+
+            for row in csv_reader:
+                box1.append(row)
+
+            print("In Box 1 sind {} Karten".format(len(box1)))
+        
+        # Lese Box 2 aus und speichere in 
+        # gleichnamiger Liste
+        with open("files/Box_2.csv", "r") as csv_file: 
+            csv_reader = csv.reader(csv_file)
+
+            for row in csv_reader:
+                box2.append(row)
+            
+            print("In Box 2 sind {} Karten".format(len(box2)))
+        
+        # Lese Box 3 aus und speichere in 
+        # gleichnamiger Liste
+        with open("files/Box_3.csv", "r") as csv_file: 
+            csv_reader = csv.reader(csv_file)
+
+            for row in csv_reader:
+                box3.append(row)
+
+            print("In Box 3 sind {} Karten".format(len(box3)))
+        
+        # Lese Box 4 aus und speichere in 
+        # gleichnamiger Liste
+        with open("files/Box_4.csv", "r") as csv_file: 
+            csv_reader = csv.reader(csv_file)
+
+            for row in csv_reader:
+                box4.append(row)
+
+            print("In Box 4 sind {} Karten".format(len(box4)))
+
+        # Lese Box 5 aus und speichere in 
+        # gleichnamiger Liste
+        with open("files/Box_5.csv", "r") as csv_file: 
+            csv_reader = csv.reader(csv_file)
+
+            for row in csv_reader:
+                box5.append(row)
+
+            print("In Box 5 sind {} Karten".format(len(box5)))
