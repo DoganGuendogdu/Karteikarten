@@ -30,10 +30,6 @@ class Karteikarten(object):
         # Liste, in der die einzelnen Zeilen hinterlegt sind
         lines = []
 
-        if os.path.getsize(inFile) == 0:
-            print("\nDie Datei ist LEER!")
-            print("Starten Sie das Programm erneut und waehlen Sie eine andere Datei aus!")
-            quit()
 
         # Lese Box 1 aus und haenge Indizes 
         # fuer richtige und falsche Antwort dran
@@ -439,38 +435,37 @@ class Karteikarten(object):
                 # Aktualisiere den Index fuer korrekt-beantwortet Frage
                 randomObject[2] = correctIndex
 
-                # Wenn Frage richtig, so loesche aus aktueller Csv-Datei
+                # Loesche Frage aus aktueller Datei, wenn falsch
                 type(self).deleteAnswerOutBoxes(self, randomObject)
 
-                # Entferne die richtig beantwortete Frage  
                 box.remove(randomObject)
 
                 random.shuffle(box)
                 print()
+
             else:
-                
-                # Erhoehe globalen Zaehler fur falsche Frage
+                #Erhoehe globalen Zaehler fur falsche Frage
                 Karteikarten.counterWrongAnswer += 1
-
+    
                 print("Falsche Antwort!")
-
+    
                 # Erhoehe den Zaehler, um herauszufinden, 
                 # wie oft die Frage falsch beantwortet wurde
                 falseIndex = int(falseIndex)
                 falseIndex += 1
                 falseIndex = str(falseIndex)
-
+    
                 # Aktualisiere den falschen Index
                 randomObject[3] = falseIndex
-
+    
                 # Loesche Frage aus aktueller Datei, wenn falsch
                 type(self).deleteAnswerOutBoxes(self, randomObject)
-
+    
                 # Schreibe Frage zureuck in Box 1
                 type(self).writeIntoBox1(self, randomObject)
-
+    
                 box.remove(randomObject)
-
+                
                 random.shuffle(box)
                 print()
     
@@ -503,6 +498,15 @@ class Karteikarten(object):
         print("Anzahl der falschen Antworten : "+ str(counterAnswerFalse))
         print(str(procent)+ "% der Fragen wurden richtig beantwortet")
         print()
+
+    # Methode zum Uerpruefen der Inhalte der CSV
+    # wenn ALLE leer, so wurden alle Fragen beantwortet
+    @staticmethod
+    def get_length_of_list(liste):
+        if len(liste) == 0:
+            return True
+        else:
+            return False
 
     # Lese die einzelnen Csv-Dateien aus,
     # um herauszufinden, wie viele Fragen
@@ -570,4 +574,16 @@ class Karteikarten(object):
 
             print("In Box 5 sind {} Karten".format(len(box5)))
 
-                            
+        # Ueberpruefe, ob ALLE Dateien leer sind    
+        b1 = self.get_length_of_list(box1)
+        b2 = self.get_length_of_list(box2)
+        b3 = self.get_length_of_list(box3)
+        b4 = self.get_length_of_list(box4)
+        b5 = self.get_length_of_list(box5)
+        
+        if (b1 == True and b2 == True and 
+            b3 == True and b4 == True and
+            b5 == True):
+            
+            print("ALLE Fragen wurden beantwortet.\nHerzlichen Glückwunsch!")
+    

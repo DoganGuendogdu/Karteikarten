@@ -32,29 +32,29 @@ endTime = startTime + datetime.timedelta(minutes=ui.getStudyTime())
 
 
 # # Karteiprogramm fuer Box 1
-# print("\nBox 1")
-# k1 = kk.Karteikarten(box1, box1, "files/Box_2.csv")
-# k1.checkBox1()
+print("\nBox 1")
+k1 = kk.Karteikarten(box1, box1, "files/Box_2.csv")
+k1.checkBox1()
 
 # # Karteiprogramm fuer Box 2
-# print("\nBox 2")
-# k2 = kk.Karteikarten(box1, "files/Box_2.csv", "files/Box_3.csv")
-# k2.checkOtherBoxes() 
+print("\nBox 2")
+k2 = kk.Karteikarten(box1, "files/Box_2.csv", "files/Box_3.csv")
+k2.checkOtherBoxes() 
 
 # # Karteiprogramm fuer Box 3
-# print("\nBox 3")
-# k3 = kk.Karteikarten(box1, "files/Box_3.csv", "files/Box_4.csv")
-# k3.checkOtherBoxes()
+print("\nBox 3")
+k3 = kk.Karteikarten(box1, "files/Box_3.csv", "files/Box_4.csv")
+k3.checkOtherBoxes()
 
-# # Karteiprogramm fuer Box 4
-# print("\nBox 4")
-# k4 = kk.Karteikarten(box1, "files/Box_4.csv", "files/Box_5.csv")
-# k4.checkOtherBoxes()
+# Karteiprogramm fuer Box 4
+print("\nBox 4")
+k4 = kk.Karteikarten(box1, "files/Box_4.csv", "files/Box_5.csv")
+k4.checkOtherBoxes()
 
 # # Karteiprogramm fuer Box 5
-# print("\nBox 5")
-# k5 = kk.Karteikarten(box1, "files/Box_5.csv", None)
-# k5.checkBox5()
+print("\nBox 5")
+k5 = kk.Karteikarten(box1, "files/Box_5.csv", None)
+k5.checkBox5()
 
 # Gebe Statistik Gesamt aus
 kk.Karteikarten.getStatistics()
