@@ -6,8 +6,6 @@ from tkinter import filedialog
 def getStudyTime(): 
     # Zeiteingabe des Benutzers
     userTime = input()       
-    print()
-
     try:
         # Nehme Eingabe des Benutzers entgegen in Minuten
         # Konvertiere Eingabe in eine ganzzahlige Zahl
@@ -24,6 +22,8 @@ def getStudyTime():
         print("Die Eingabe darf kein Zeichen sein.")
         print("Bitte geben Sie erneut eine Zahl ein!")
         return getStudyTime()
+
+    print(str(userTime)+ " Minuten")
 
     return input_Time
 

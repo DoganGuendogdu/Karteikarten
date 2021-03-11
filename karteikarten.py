@@ -1,5 +1,6 @@
 import csv
 import random
+import os
 
 class Karteikarten(object):
 
@@ -29,46 +30,47 @@ class Karteikarten(object):
         # Liste, in der die einzelnen Zeilen hinterlegt sind
         lines = []
 
+        if os.path.getsize(inFile) == 0:
+            print("\nDie Datei ist LEER!")
+            print("Starten Sie das Programm erneut und waehlen Sie eine andere Datei aus!")
+            quit()
+
         # Lese Box 1 aus und haenge Indizes 
         # fuer richtige und falsche Antwort dran
         with open(inFile, "r") as csv_file: 
             csv_reader = csv.reader(csv_file,skipinitialspace=True, delimiter = ",")
-
             for row in csv_reader:
-                
                 # Wenn Indizes noch nicht vorhanden sind
                 if len(row) == 2:
                     # Erweitere eingelesene CSV um Indizes
                     row.extend([0,0]) 
-
                     #Attribute jeder Zeile
                     question    = row[0]
                     answer      = row[1]
                     rightIndex  = row[2]
                     wrongIndex  = row[3]
-
-
                     # Attribute als Zeile
                     line = "{},{},{},{}\n".format(question, answer, rightIndex, wrongIndex)
-                    
                     lines.append(line)
-                
+
                 # Ansonsten behalte die Zeilen bei
-                else:
+                elif len(row) == 4:
                      #Attribute jeder Zeile
                     question    = row[0]
                     answer      = row[1]
                     rightIndex  = row[2]
                     wrongIndex  = row[3]
-
                     # Attribute als Zeile
                     line = "{},{},{},{}\n".format(question, answer, rightIndex, wrongIndex)
-
                     lines.append(line)
+                else:
+                    print("\nDie Datei hat ein FALSCHES Format!")
+                    print("Starten Sie das Programm erneut und waehlen Sie eine andere Datei aus!")
+                    quit()
 
+        
         csv_file.close()
-
-
+            
         with open(outFile, "w") as csv_writer: 
 
             for line in lines:
@@ -264,7 +266,7 @@ class Karteikarten(object):
                 # Erhoehe globalen Zaehler fur falsche Frage
                 Karteikarten.counterWrongAnswer += 1
 
-                print("Falsche Antwort")
+                print("Falsche Antwort!")
 
                 # Erhoehe den Zaehler, um herauszufinden, 
                 # wie oft die Frage falsch beantwortet wurde
@@ -356,7 +358,7 @@ class Karteikarten(object):
                 # Erhoehe globalen Zaehler fur falsche Frage
                 Karteikarten.counterWrongAnswer += 1
 
-                print("Falsche Antwort")
+                print("Falsche Antwort!")
 
                 # Erhoehe den Zaehler, um herauszufinden, 
                 # wie oft die Frage falsch beantwortet wurde
@@ -450,7 +452,7 @@ class Karteikarten(object):
                 # Erhoehe globalen Zaehler fur falsche Frage
                 Karteikarten.counterWrongAnswer += 1
 
-                print("Falsche Antwort")
+                print("Falsche Antwort!")
 
                 # Erhoehe den Zaehler, um herauszufinden, 
                 # wie oft die Frage falsch beantwortet wurde
@@ -494,12 +496,13 @@ class Karteikarten(object):
             procent = round(procent, 2)
         except ZeroDivisionError as AllAnswersWrong:
             print("Es wurde KEINE Frage richtig beantwortet!")
-            quit()
+            return 0
 
         print("Anzahl gestellter Fragen      : "+ str(counterQuestions))
         print("Anzahl der richtigen Antworten: "+ str(counterAnswerRight))
         print("Anzahl der falschen Antworten : "+ str(counterAnswerFalse))
         print(str(procent)+ "% der Fragen wurden richtig beantwortet")
+        print()
 
     # Lese die einzelnen Csv-Dateien aus,
     # um herauszufinden, wie viele Fragen
@@ -566,3 +569,5 @@ class Karteikarten(object):
                 box5.append(row)
 
             print("In Box 5 sind {} Karten".format(len(box5)))
+
+                            
