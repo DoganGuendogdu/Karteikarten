@@ -29,8 +29,6 @@ endTime = startTime + datetime.timedelta(minutes=ui.getStudyTime())
 #     print("Zeitlimit ist abgelaufen!") 
 
 
-
-
 # # Karteiprogramm fuer Box 1
 print("\nBox 1")
 k1 = kk.Karteikarten(box1, box1, "files/Box_2.csv")

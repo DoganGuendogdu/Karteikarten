@@ -1,6 +1,5 @@
 import csv
 import random
-import os
 
 class Karteikarten(object):
 
@@ -87,6 +86,24 @@ class Karteikarten(object):
         with open(self.__nextBox, "a") as csv_writer:
             csv_writer.write(line)    
     
+    # Wenn Frage in Box 5 richtig beantwortet wurde, 
+    # schreibe diese in 'result.csv'
+    @staticmethod
+    def writeIntoResultCsv(obj):
+
+         #Attribute jeder Zeile
+        question    = obj[0]
+        answer      = obj[1]
+        rightIndex  = obj[2]
+        wrongIndex  = obj[3]
+
+        # Attribute als Zeile
+        line = "{},{},{},{}\n".format(question, answer, rightIndex, wrongIndex)
+
+        # Schreibe richtige finale Antwort in 'results.csv'
+        with open("files/result.csv", "a") as csv_writer: 
+            csv_writer.write(line)
+
     # Aktualsiere Fragen wenn Frage
     # in Box 1 falsch beantwortet wurde
     def updateBox1(self, obj):
@@ -119,73 +136,8 @@ class Karteikarten(object):
             for row in kasten:
                 csv_writer.write(row)
 
-    # Schreibe Frage in Box 1, wenn diese 
-    # in einer anderen Box falsch beantwortet wurde
-    def writeIntoBox1(self, obj):
-        
-        box1 = []
-
-        # Box 1
-        file = self.__box1.name
-
-         #Attribute jeder Zeile
-        question    = obj[0]
-        answer      = obj[1]
-        rightIndex  = obj[2]
-        wrongIndex  = obj[3]
-
-        # Attribute als Zeile
-        line = "{},{},{},{}\n".format(question, answer, rightIndex, wrongIndex)
-
-        # Lese Box 1 aus
-        with open(file, "r") as csv_reader:
-
-            # Behalte die Fragen, die schon in Box 1 stehen, bei
-            for row in csv_reader:
-                box1.append(row)
-
-        # Haenge die falsche Frage an die Datei hinzu
-        box1.append(line)
-
-        # Schreibe nun in Box 1
-        with open(file, "w") as csv_writer: 
-            for row in box1:
-                csv_writer.write(row)
-
-    # Loesche Antwort aus Kasten 1 
-    def deleteAnswerOutBox1(self, obj):
-        kasten = []
-
-        file = self.__currentBox.name 
-
-        with open(file, "r") as csv_reader: 
-            for row in csv_reader: 
-                if obj[0] in row: 
-                    del(row)
-                else:
-                    kasten.append(row)
-
-        with open(file, "w") as csv_writer: 
-            for row in kasten:
-                csv_writer.write(row)
-
-    # Loesche Antwort aus anderen Kaesten
-    def deleteAnswerOutBoxes(self, obj):
-        kasten = []
-
-        file = self.__currentBox 
-
-        with open(file, "r") as csv_reader: 
-            for row in csv_reader: 
-                if obj[0] in row: 
-                    del(row)
-                else:
-                    kasten.append(row)
-
-        with open(file, "w") as csv_writer: 
-            for row in kasten:
-                csv_writer.write(row)
-
+      # Checke Fragen und Antworten fuer Box 1
+    
     # Checke Fragen und Antworten fuer Box 1
     def checkBox1(self):
 
@@ -277,6 +229,73 @@ class Karteikarten(object):
 
                 random.shuffle(box1)
                 print()
+
+    # Schreibe Frage in Box 1, wenn diese 
+    # in einer anderen Box falsch beantwortet wurde
+    def writeIntoBox1(self, obj):
+        
+        box1 = []
+
+        # Box 1
+        file = self.__box1.name
+
+         #Attribute jeder Zeile
+        question    = obj[0]
+        answer      = obj[1]
+        rightIndex  = obj[2]
+        wrongIndex  = obj[3]
+
+        # Attribute als Zeile
+        line = "{},{},{},{}\n".format(question, answer, rightIndex, wrongIndex)
+
+        # Lese Box 1 aus
+        with open(file, "r") as csv_reader:
+
+            # Behalte die Fragen, die schon in Box 1 stehen, bei
+            for row in csv_reader:
+                box1.append(row)
+
+        # Haenge die falsche Frage an die Datei hinzu
+        box1.append(line)
+
+        # Schreibe nun in Box 1
+        with open(file, "w") as csv_writer: 
+            for row in box1:
+                csv_writer.write(row)
+
+    # Loesche Antwort aus Kasten 1 
+    def deleteAnswerOutBox1(self, obj):
+        kasten = []
+
+        file = self.__currentBox.name 
+
+        with open(file, "r") as csv_reader: 
+            for row in csv_reader: 
+                if obj[0] in row: 
+                    del(row)
+                else:
+                    kasten.append(row)
+
+        with open(file, "w") as csv_writer: 
+            for row in kasten:
+                csv_writer.write(row)
+
+    # Loesche Antwort aus anderen Kaesten
+    def deleteAnswerOutBoxes(self, obj):
+        kasten = []
+
+        file = self.__currentBox 
+
+        with open(file, "r") as csv_reader: 
+            for row in csv_reader: 
+                if obj[0] in row: 
+                    del(row)
+                else:
+                    kasten.append(row)
+
+        with open(file, "w") as csv_writer: 
+            for row in kasten:
+                csv_writer.write(row)
 
     # Checke Fragen und Antworten fuer Box 2 - 4 
     def checkOtherBoxes(self):
@@ -438,6 +457,9 @@ class Karteikarten(object):
                 # Loesche Frage aus aktueller Datei, wenn falsch
                 type(self).deleteAnswerOutBoxes(self, randomObject)
 
+                # Schreibe finale richtige Antwort in 'result.csv'
+                type(self).writeIntoResultCsv(randomObject)
+
                 box.remove(randomObject)
 
                 random.shuffle(box)
@@ -446,26 +468,26 @@ class Karteikarten(object):
             else:
                 #Erhoehe globalen Zaehler fur falsche Frage
                 Karteikarten.counterWrongAnswer += 1
-    
+
                 print("Falsche Antwort!")
-    
+
                 # Erhoehe den Zaehler, um herauszufinden, 
                 # wie oft die Frage falsch beantwortet wurde
                 falseIndex = int(falseIndex)
                 falseIndex += 1
                 falseIndex = str(falseIndex)
-    
+
                 # Aktualisiere den falschen Index
                 randomObject[3] = falseIndex
-    
+
                 # Loesche Frage aus aktueller Datei, wenn falsch
                 type(self).deleteAnswerOutBoxes(self, randomObject)
-    
+
                 # Schreibe Frage zureuck in Box 1
                 type(self).writeIntoBox1(self, randomObject)
-    
+
                 box.remove(randomObject)
-                
+
                 random.shuffle(box)
                 print()
     
