@@ -1,5 +1,8 @@
-from tkinter import *
 from tkinter import filedialog
+import os
+import tkinter
+import csv
+
 
 
 # Nehme die Lernzeit des Benutzers entgegen
@@ -27,10 +30,74 @@ def getStudyTime():
 
     return input_Time
 
-# Lese ausgewaehlte Datei des Users ein
-def getSelectedCsv():
-    Tk().withdraw()
-    # Lese NUR CSV-Dateien ein
+
+# Lese ausgewaehlte Datei des Users ein und
+# checke auf formale Kriterien
+def inputFile():
+
+    # Root des Fensters
+    root = tkinter.Tk()
+    root.withdraw()
+
+    # Entgegengenommene Datei
     file = filedialog.askopenfile(title = "Waehlen Sie eine Csv-Datei aus", filetypes = [("Csv file", ".csv")])
     
+    # Liste, in der der Dateiinhalt der Csv gespeichert wird
+    box = []
+
+    try:
+        # Ueberpreufe, ob Dateiinhalt leer ist
+        with open(file.name) as csv_file:
+            csv_reader = csv.reader(csv_file,skipinitialspace=True, delimiter = ",")
+
+            for row in csv_reader:
+                box.append(row)
+
+        if len(box) == 0:
+            print("\nDie Datei ist leer")
+            print("Waehlen Sie eine andere Datei aus.")
+
+            # Schliesse aktuelles Fenster
+            root.destroy()
+
+            return inputFile()
+
+        else:
+            # # Entferne ueberschuessige Leerzeichen 
+            # with open(file.name, "r") as csv_file:
+            #     csv_reader = csv.reader(csv_file, skipinitialspace=True, delimiter = ",")
+
+            #     # for row in csv_reader:
+            #     #     for e in row:
+            #     hello = [x.replace(", ", "") for x in csv_reader ]
+            #     print(hello)
+
+
+            # Ansonsten pruefe, ob Zeilen in Datei dem erlaubten Format entspricht
+            with open(file.name, "r") as csv_file:
+                csv_reader = csv.reader(csv_file,skipinitialspace=True, delimiter = ",")
+
+                for row in csv_reader:
+                    
+                    if len(row)<2 or len(row) > 4:
+                        print("\nDie Datei entspricht NICHT dem erlaubten Format")
+                        print("Waehlen Sie eine andere Datei aus.")
+
+                        root.destroy()
+
+                        return inputFile()
+
+
+
+    # Exception tritt auf, wenn Dateifenster geschlossen wird
+    except (AttributeError, TypeError):
+        print("\nAuswahl der Datei wurde unterbrochen.")
+        print("Beende Programm.")
+        quit()
+    # Wenn keine Fehler auftreten
+    else:
+        print("\nDatei wurde eingelesen.")
+
+    root.destroy()
+
     return file

@@ -20,6 +20,7 @@ class Karteikarten(object):
     # Checke Format Box 1
     @classmethod
     def checkFormatBox1(cls, file):
+        
         # Box1
         inFile = file.name
 
@@ -35,6 +36,7 @@ class Karteikarten(object):
         with open(inFile, "r") as csv_file: 
             csv_reader = csv.reader(csv_file,skipinitialspace=True, delimiter = ",")
             for row in csv_reader:
+                
                 # Wenn Indizes noch nicht vorhanden sind
                 if len(row) == 2:
                     # Erweitere eingelesene CSV um Indizes
@@ -58,6 +60,8 @@ class Karteikarten(object):
                     # Attribute als Zeile
                     line = "{},{},{},{}\n".format(question, answer, rightIndex, wrongIndex)
                     lines.append(line)
+                # eigentlich nicht noetig, da formale Kriterien 
+                # durch 'input.py' geprueft werden
                 else:
                     print("\nDie Datei hat ein FALSCHES Format!")
                     print("Starten Sie das Programm erneut und waehlen Sie eine andere Datei aus!")
@@ -85,7 +89,40 @@ class Karteikarten(object):
 
         with open(self.__nextBox, "a") as csv_writer:
             csv_writer.write(line)    
-    
+
+    # Schreibe Frage in Box 1, wenn diese 
+    # in einer anderen Box falsch beantwortet wurde
+    def writeIntoBox1(self, obj):
+        
+        box1 = []
+
+        # Box 1
+        file = self.__box1.name
+
+         #Attribute jeder Zeile
+        question    = obj[0]
+        answer      = obj[1]
+        rightIndex  = obj[2]
+        wrongIndex  = obj[3]
+
+        # Attribute als Zeile
+        line = "{},{},{},{}\n".format(question, answer, rightIndex, wrongIndex)
+
+        # Lese Box 1 aus
+        with open(file, "r") as csv_reader:
+
+            # Behalte die Fragen, die schon in Box 1 stehen, bei
+            for row in csv_reader:
+                box1.append(row)
+
+        # Haenge die falsche Frage an die Datei hinzu
+        box1.append(line)
+
+        # Schreibe nun in Box 1
+        with open(file, "w") as csv_writer: 
+            for row in box1:
+                csv_writer.write(row)
+
     # Wenn Frage in Box 5 richtig beantwortet wurde, 
     # schreibe diese in 'result.csv'
     @staticmethod
@@ -138,6 +175,44 @@ class Karteikarten(object):
 
       # Checke Fragen und Antworten fuer Box 1
     
+      # Loesche Antwort aus Kasten 1 
+    
+    # Loesche Frage aus Kasten 1
+    def deleteAnswerOutBox1(self, obj):
+        kasten = []
+
+        file = self.__currentBox.name 
+
+        with open(file, "r") as csv_reader: 
+            for row in csv_reader: 
+                if obj[0] in row: 
+                    del(row)
+                else:
+                    kasten.append(row)
+
+        with open(file, "w") as csv_writer: 
+            for row in kasten:
+                csv_writer.write(row)
+
+       # Loesche Antwort aus anderen Kaesten
+   
+    # Loesche Fraage aus Kasten 2 - 5
+    def deleteAnswerOutBoxes(self, obj):
+        kasten = []
+
+        file = self.__currentBox 
+
+        with open(file, "r") as csv_reader: 
+            for row in csv_reader: 
+                if obj[0] in row: 
+                    del(row)
+                else:
+                    kasten.append(row)
+
+        with open(file, "w") as csv_writer: 
+            for row in kasten:
+                csv_writer.write(row)
+
     # Checke Fragen und Antworten fuer Box 1
     def checkBox1(self):
 
@@ -229,73 +304,6 @@ class Karteikarten(object):
 
                 random.shuffle(box1)
                 print()
-
-    # Schreibe Frage in Box 1, wenn diese 
-    # in einer anderen Box falsch beantwortet wurde
-    def writeIntoBox1(self, obj):
-        
-        box1 = []
-
-        # Box 1
-        file = self.__box1.name
-
-         #Attribute jeder Zeile
-        question    = obj[0]
-        answer      = obj[1]
-        rightIndex  = obj[2]
-        wrongIndex  = obj[3]
-
-        # Attribute als Zeile
-        line = "{},{},{},{}\n".format(question, answer, rightIndex, wrongIndex)
-
-        # Lese Box 1 aus
-        with open(file, "r") as csv_reader:
-
-            # Behalte die Fragen, die schon in Box 1 stehen, bei
-            for row in csv_reader:
-                box1.append(row)
-
-        # Haenge die falsche Frage an die Datei hinzu
-        box1.append(line)
-
-        # Schreibe nun in Box 1
-        with open(file, "w") as csv_writer: 
-            for row in box1:
-                csv_writer.write(row)
-
-    # Loesche Antwort aus Kasten 1 
-    def deleteAnswerOutBox1(self, obj):
-        kasten = []
-
-        file = self.__currentBox.name 
-
-        with open(file, "r") as csv_reader: 
-            for row in csv_reader: 
-                if obj[0] in row: 
-                    del(row)
-                else:
-                    kasten.append(row)
-
-        with open(file, "w") as csv_writer: 
-            for row in kasten:
-                csv_writer.write(row)
-
-    # Loesche Antwort aus anderen Kaesten
-    def deleteAnswerOutBoxes(self, obj):
-        kasten = []
-
-        file = self.__currentBox 
-
-        with open(file, "r") as csv_reader: 
-            for row in csv_reader: 
-                if obj[0] in row: 
-                    del(row)
-                else:
-                    kasten.append(row)
-
-        with open(file, "w") as csv_writer: 
-            for row in kasten:
-                csv_writer.write(row)
 
     # Checke Fragen und Antworten fuer Box 2 - 4 
     def checkOtherBoxes(self):
@@ -499,8 +507,7 @@ class Karteikarten(object):
 
     # gebe Anzahl gestellter Fragen,
     # richtig und falsch beantworteter nach jeweiliger Session aus
-    @classmethod
-    def getStatistics(cls):
+    def getStatisticOfQuestion(self):
 
         counterQuestions    = Karteikarten.counterQuestions
         counterAnswerRight  = Karteikarten.counterRightAnswer
@@ -524,7 +531,7 @@ class Karteikarten(object):
     # Methode zum Uerpruefen der Inhalte der CSV
     # wenn ALLE leer, so wurden alle Fragen beantwortet
     @staticmethod
-    def get_length_of_list(liste):
+    def get_length_of_Csv(liste):
         if len(liste) == 0:
             return True
         else:
@@ -533,7 +540,7 @@ class Karteikarten(object):
     # Lese die einzelnen Csv-Dateien aus,
     # um herauszufinden, wie viele Fragen
     # in den Boxen sind
-    def getResultBoxes(self,kasten1):
+    def getNumberOfQuestions(self,kasten1):
 
         # Listen, in denen der Inhalt der einzelnen 
         # Csv Dateien gespeichert wird
@@ -596,16 +603,72 @@ class Karteikarten(object):
 
             print("In Box 5 sind {} Karten".format(len(box5)))
 
+    # Schaue ob alle Boxen leer sind, 
+    # damit gesagt wird, dass alles beantwortet wurde
+    def getFinalAnswer(self, kasten1):
+        # Listen, in denen der Inhalt der einzelnen 
+        # Csv Dateien gespeichert wird
+        box1 = []
+        box2 = []
+        box3 = []
+        box4 = []
+        box5 = []
+
+        # Box 1
+        fileBox1 = kasten1.name
+
+        # Lese Box 1 aus und speichere in 
+        # gleichnamiger Liste
+        with open(fileBox1, "r") as csv_file: 
+            csv_reader = csv.reader(csv_file)
+
+            for row in csv_reader:
+                box1.append(row)
+
+        # Lese Box 2 aus und speichere in 
+        # gleichnamiger Liste
+        with open("files/Box_2.csv", "r") as csv_file: 
+            csv_reader = csv.reader(csv_file)
+
+            for row in csv_reader:
+                box2.append(row)
+            
+        # Lese Box 3 aus und speichere in 
+        # gleichnamiger Liste
+        with open("files/Box_3.csv", "r") as csv_file: 
+            csv_reader = csv.reader(csv_file)
+
+            for row in csv_reader:
+                box3.append(row)
+        
+        # Lese Box 4 aus und speichere in 
+        # gleichnamiger Liste
+        with open("files/Box_4.csv", "r") as csv_file: 
+            csv_reader = csv.reader(csv_file)
+
+            for row in csv_reader:
+                box4.append(row)
+
+        # Lese Box 5 aus und speichere in 
+        # gleichnamiger Liste
+        with open("files/Box_5.csv", "r") as csv_file: 
+            csv_reader = csv.reader(csv_file)
+
+            for row in csv_reader:
+                box5.append(row)
+
         # Ueberpruefe, ob ALLE Dateien leer sind    
-        b1 = self.get_length_of_list(box1)
-        b2 = self.get_length_of_list(box2)
-        b3 = self.get_length_of_list(box3)
-        b4 = self.get_length_of_list(box4)
-        b5 = self.get_length_of_list(box5)
+        b1 = self.get_length_of_Csv(box1)
+        b2 = self.get_length_of_Csv(box2)
+        b3 = self.get_length_of_Csv(box3)
+        b4 = self.get_length_of_Csv(box4)
+        b5 = self.get_length_of_Csv(box5)
         
         if (b1 == True and b2 == True and 
             b3 == True and b4 == True and
             b5 == True):
             
             print("ALLE Fragen wurden beantwortet.\nHerzlichen Glückwunsch!")
-    
+            return True
+        else:
+            return False

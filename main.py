@@ -1,6 +1,7 @@
 import datetime 
-import userInput as ui
+import userInput    as ui
 import karteikarten as kk
+import database     as db
 
 # Begruessung   
 print()
@@ -9,7 +10,8 @@ print("Bitte beachte die Gross,- und Kleinschreibung")
 print("Bitte waehlen Sie ihre Csv-Datei aus")
 
 #Lese die Box 1 durch den User ein
-box1    = ui.getSelectedCsv()
+box1    = ui.inputFile()
+
 
 # Checke das Format der entgegengenommenen Datei
 kk.Karteikarten.checkFormatBox1(box1)
@@ -54,9 +56,18 @@ print("\nBox 5")
 k5 = kk.Karteikarten(box1, "files/Box_5.csv", None)
 k5.checkBox5()
 
-# Gebe Statistik Gesamt aus
-kk.Karteikarten.getStatistics()
 
+                #Statistik
+#----------------------------------------------#
+r = kk.Karteikarten(None,None,None)
+# Gebe Statistik ueber gestelle Fragen aus
+r.getStatisticOfQuestion()
 # Gebe aus, wie viele Fragen noch in den Boxen
-k6 = kk.Karteikarten(None,None,None)
-k6.getResultBoxes(box1)
+r.getNumberOfQuestions(box1)
+# schaue, ob alle Fragen beantwortet wurden
+r.getFinalAnswer(box1)
+
+
+
+
+# db.createDatabase()
