@@ -1,6 +1,6 @@
-from tkinter import filedialog
-import os
+from os import replace
 import tkinter
+from tkinter import filedialog
 import csv
 
 
@@ -35,9 +35,11 @@ def getStudyTime():
 # checke auf formale Kriterien
 def inputFile():
 
-    # Root des Fensters
+    # Eigenschaften des Fensters
     root = tkinter.Tk()
+
     root.withdraw()
+
 
     # Entgegengenommene Datei
     file = filedialog.askopenfile(title = "Waehlen Sie eine Csv-Datei aus", filetypes = [("Csv file", ".csv")])
@@ -63,29 +65,83 @@ def inputFile():
             return inputFile()
 
         else:
-            # # Entferne ueberschuessige Leerzeichen 
-            # with open(file.name, "r") as csv_file:
-            #     csv_reader = csv.reader(csv_file, skipinitialspace=True, delimiter = ",")
+            result = []
 
-            #     # for row in csv_reader:
-            #     #     for e in row:
-            #     hello = [x.replace(", ", "") for x in csv_reader ]
-            #     print(hello)
-
-
-            # Ansonsten pruefe, ob Zeilen in Datei dem erlaubten Format entspricht
+            # Entferne ueberschuessige Elemente
             with open(file.name, "r") as csv_file:
-                csv_reader = csv.reader(csv_file,skipinitialspace=True, delimiter = ",")
+                # skipinitialspace=True
+                # --> entfernt automatisch Leerzeichen nach dem Delimiter UND 
+                # wenn am Anfang unnoetiger Weise Leerzeichen sind
+                csv_reader = csv.reader(csv_file, skipinitialspace=True, delimiter = ",")
 
                 for row in csv_reader:
-                    
-                    if len(row)<2 or len(row) > 4:
-                        print("\nDie Datei entspricht NICHT dem erlaubten Format")
-                        print("Waehlen Sie eine andere Datei aus.")
+                    for i in range(len(row)):
+                        # Loesche leeres Element am Ende der Liste
+                        # Tritt auf, wenn am Ende noch ein Komma steht
+                        if row[i] == "":
+                            del(row[i])
+                        # Loesche Leerzeichen vor Komma am Ende 
+                        # des vorherigen Listelelementes
+                        elif row[i][-1] == " ":
+                            
+                            # word = aktuelles Wort
+                            word = row[i]
 
-                        root.destroy()
+                            # a = Wort mit entferntem Leerzeichen
+                            a = word.rstrip(" ")
 
-                        return inputFile()
+                            # ersetze Wort mit Leerzeichen 
+                            # durch Wort OHNE Leerzeichen
+                            word = a
+
+                            # Akualisiere Listenobjekt mit Wort ohne Leerzeichen
+                            row = [x.replace(row[i], word) for x in row]
+
+
+                    result.append(row)
+
+            # Aktualisiere eingelesen Csv mit korrigierten Werten
+            with open(file.name, "w") as csv_writer:
+                for row in result:
+                    question = row[0]
+                    answer   = row[1]
+
+                    if len(row) == 2:
+                        line = "{},{}\n".format(question, answer)
+
+                        csv_writer.write(line)
+
+                    elif len(row) == 4:
+                        c_rightAnswer = row[2]
+                        c_falseAnswer = row[3]
+
+                        line = "{},{},{},{}\n".format(question, answer, c_rightAnswer, c_falseAnswer)
+
+                        csv_writer.write(line)
+                    else:
+                        pass
+                        # for i in range(len(result)):
+
+                        #     csv_writer.write(str(row))
+
+                        # # for element in row:
+                        # #     print(element)
+                        # #     r = "{,}".join(element)
+                            
+
+                        # #     print(r)
+                        # #     # print(line)              
+                        # #     # line = "{}".format(word)
+                        # #     # csv_writer.write(line)
+
+
+                        
+                        # print("\nDie Datei entspricht NICHT dem erlaubten Format")
+                        # print("Waehlen Sie eine andere Datei aus.")
+
+                        # root.destroy()
+
+                        # return inputFile()
 
 
 
