@@ -101,49 +101,24 @@ def inputFile():
                     result.append(row)
 
             # Aktualisiere eingelesen Csv mit korrigierten Werten
-            with open(file.name, "w") as csv_writer:
-                for row in result:
-                    question = row[0]
-                    answer   = row[1]
-
-                    if len(row) == 2:
-                        line = "{},{}\n".format(question, answer)
-
-                        csv_writer.write(line)
-
-                    elif len(row) == 4:
-                        c_rightAnswer = row[2]
-                        c_falseAnswer = row[3]
-
-                        line = "{},{},{},{}\n".format(question, answer, c_rightAnswer, c_falseAnswer)
-
-                        csv_writer.write(line)
-                    else:
-                        pass
-                        # for i in range(len(result)):
-
-                        #     csv_writer.write(str(row))
-
-                        # # for element in row:
-                        # #     print(element)
-                        # #     r = "{,}".join(element)
-                            
-
-                        # #     print(r)
-                        # #     # print(line)              
-                        # #     # line = "{}".format(word)
-                        # #     # csv_writer.write(line)
+            with open(file.name, "w") as csv_file:
+                csv_writer = csv.writer(csv_file)
+                csv_writer.writerows(result)
 
 
-                        
-                        # print("\nDie Datei entspricht NICHT dem erlaubten Format")
-                        # print("Waehlen Sie eine andere Datei aus.")
+            # Pruefe Datei auf formale Korrekheit der Dateneingabe
+            with open(file.name, "r") as csv_file:
+                csv_reader = csv.reader(csv_file)
 
-                        # root.destroy()
+                for row in csv_reader:
 
-                        # return inputFile()
+                    if len(row) < 2 or len(row) == 3 or len(row) > 4:
+                        print("\nDie Datei entspricht NICHT dem erlaubten Format")
+                        print("Waehlen Sie eine andere Datei aus.")
 
+                        root.destroy()
 
+                        return inputFile()
 
     # Exception tritt auf, wenn Dateifenster geschlossen wird
     except (AttributeError, TypeError):

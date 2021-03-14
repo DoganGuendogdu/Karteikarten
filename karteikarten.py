@@ -51,7 +51,7 @@ class Karteikarten(object):
                     lines.append(line)
 
                 # Ansonsten behalte die Zeilen bei
-                elif len(row) == 4:
+                else:
                      #Attribute jeder Zeile
                     question    = row[0]
                     answer      = row[1]
@@ -60,13 +60,6 @@ class Karteikarten(object):
                     # Attribute als Zeile
                     line = "{},{},{},{}\n".format(question, answer, rightIndex, wrongIndex)
                     lines.append(line)
-                # eigentlich nicht noetig, da formale Kriterien 
-                # durch 'input.py' geprueft werden
-                else:
-                    print("\nDie Datei hat ein FALSCHES Format!")
-                    print("Starten Sie das Programm erneut und waehlen Sie eine andere Datei aus!")
-                    quit()
-
         
         csv_file.close()
             
