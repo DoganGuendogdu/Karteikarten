@@ -118,8 +118,13 @@ class Karteikarten(object):
 
     # Wenn Frage in Box 5 richtig beantwortet wurde, 
     # schreibe diese in 'result.csv'
-    @staticmethod
-    def writeIntoResultCsv(obj):
+    def writeIntoResultCsv(self,obj):
+
+          
+        box         = []
+
+        # 'result.csv'
+        file = self.__nextBox
 
          #Attribute jeder Zeile
         question    = obj[0]
@@ -130,9 +135,27 @@ class Karteikarten(object):
         # Attribute als Zeile
         line = "{},{},{},{}\n".format(question, answer, rightIndex, wrongIndex)
 
-        # Schreibe richtige finale Antwort in 'results.csv'
-        with open("files/result.csv", "a") as csv_writer: 
+        # Fuege die richtig-beantwortete Frage hinzu
+        with open(file, "a") as csv_writer:
             csv_writer.write(line)
+
+        # Lese 'result.csv' erneut aus, damit die Frage, 
+        # die als letztes beantwortet worden ist, 
+        # ganz oben in der Datei steht
+        with open(file, "r") as csv_reader:
+            for row in csv_reader:
+                box.append(row)
+
+        # letztes Element ist nun das erste
+        box.reverse()
+
+
+        # Schreibe die umgedrehte Liste wieder ein
+        with open(file, "w") as csv_writer:
+
+            for row in box:
+                csv_writer.write(row)
+
 
     # Aktualsiere Fragen wenn Frage
     # in Box 1 falsch beantwortet wurde
@@ -190,6 +213,8 @@ class Karteikarten(object):
        # Loesche Antwort aus anderen Kaesten
    
     # Loesche Fraage aus Kasten 2 - 5
+    # die gleiche Methode wie von Box 1 wird hier uerberschrieben, 
+    # da eingelesene Datei des Users und CSV untersch. Datentypen haben
     def deleteAnswerOutBoxes(self, obj):
         kasten = []
 
@@ -459,7 +484,7 @@ class Karteikarten(object):
                 type(self).deleteAnswerOutBoxes(self, randomObject)
 
                 # Schreibe finale richtige Antwort in 'result.csv'
-                type(self).writeIntoResultCsv(randomObject)
+                type(self).writeIntoResultCsv(self,randomObject)
 
                 box.remove(randomObject)
 

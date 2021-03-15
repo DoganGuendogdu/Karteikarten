@@ -1,4 +1,3 @@
-from os import replace
 import tkinter
 from tkinter import filedialog
 import csv
@@ -30,10 +29,10 @@ def getStudyTime():
 
     return input_Time
 
-
 # Lese ausgewaehlte Datei des Users ein und
 # checke auf formale Kriterien
 def inputFile():
+
 
     # Eigenschaften des Fensters
     root = tkinter.Tk()
@@ -120,15 +119,16 @@ def inputFile():
 
                         return inputFile()
 
-    # Exception tritt auf, wenn Dateifenster geschlossen wird
+    # Exception tritt auf, wenn Dateifenster vor Dateiauswahl geschlossen wird
     except (AttributeError, TypeError):
         print("\nAuswahl der Datei wurde unterbrochen.")
         print("Beende Programm.")
         quit()
     # Wenn keine Fehler auftreten
     else:
-        print("\nDatei wurde eingelesen.")
+        print("\nDatei wurde erfolgreich eingelesen.")
 
     root.destroy()
 
     return file
+    

@@ -56,7 +56,7 @@ def main():
 
     # # Karteiprogramm fuer Box 5
     print("\nBox 5")
-    k5 = kk.Karteikarten(box1, "files/Box_5.csv", None)
+    k5 = kk.Karteikarten(box1, "files/Box_5.csv", "files/result.csv")
     k5.checkBox5()
 
 
