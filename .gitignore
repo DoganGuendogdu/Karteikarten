@@ -4,6 +4,8 @@
 /.vscode/.ropeproject/config.py
 /.vscode/.ropeproject/objectdb
 
+/programs/__pycache__
+
 /files/Box_2.csv
 /files/Box_3.csv
 /files/Box_4.csv

@@ -1,9 +1,9 @@
 import datetime 
 import os
 import sys
-import userInput    as ui
-import karteikarten as kk
-import database     as db
+import programs.userInput    as ui
+import programs.karteikarten as kk
+import programs.database     as db
 
 
 def main():
