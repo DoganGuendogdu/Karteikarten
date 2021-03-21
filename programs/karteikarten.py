@@ -345,13 +345,16 @@ class Karteikarten(object):
         box    = []
 
         inFile = self.__currentBox
+        
+        try:
+            # Ausgelesene Box 
+            with open(inFile, "r") as csv_file:
+                csv_reader = csv.reader(csv_file)
 
-        # Ausgelesene Box 1
-        with open(inFile, "r") as csv_file:
-            csv_reader = csv.reader(csv_file)
-
-            for line in csv_reader:
-                box.append(line)
+                for line in csv_reader:
+                    box.append(line)
+        except FileNotFoundError:
+            pass
 
 
         i       = 0
@@ -443,12 +446,15 @@ class Karteikarten(object):
 
         inFile = self.__currentBox
 
-        # Ausgelesene Box 1
-        with open(inFile, "r") as csv_file:
-            csv_reader = csv.reader(csv_file)
+        try:
+            # Ausgelesene Box 
+            with open(inFile, "r") as csv_file:
+                csv_reader = csv.reader(csv_file)
 
-            for line in csv_reader:
-                box.append(line)
+                for line in csv_reader:
+                    box.append(line)
+        except FileNotFoundError:
+            pass
 
 
         i       = 0
@@ -561,147 +567,84 @@ class Karteikarten(object):
         print(str(procent)+ "% der Fragen wurden richtig beantwortet")
         print()
 
-    # Methode zum Uerpruefen der Inhalte der CSV
-    # wenn ALLE leer, so wurden alle Fragen beantwortet
-    @staticmethod
-    def get_length_of_Csv(liste):
-        if len(liste) == 0:
+    # True  --> Datei ist leer 
+    # False --> Datei ist nicht leer
+    def get_size_of_Csv(self,file):
+
+        box = []
+
+        try:
+            with open(file, "r") as csv_file:
+                csv_reader = csv.reader(csv_file)
+                for row in csv_reader:
+                    box.append(row)
+        except:
+            pass
+
+        if len(box) == 0:
             return True
         else:
             return False
+
+    # gibt Anzahl der Karten in der Csv zurueck
+    def get_length_Element_Csv(self, file):
+        
+        box = []
+
+        try:
+            with open(file, "r") as csv_file:
+                csv_reader = csv.reader(csv_file)
+
+                for row in csv_reader:
+                    box.append(row)
+
+        except FileNotFoundError:
+            pass
+
+        return(len(box))
 
     # Lese die einzelnen Csv-Dateien aus,
     # um herauszufinden, wie viele Fragen
     # in den Boxen sind
     def getNumberOfQuestions(self,kasten1):
 
-        # Listen, in denen der Inhalt der einzelnen 
-        # Csv Dateien gespeichert wird
-        box1 = []
-        box2 = []
-        box3 = []
-        box4 = []
-        box5 = []
-
         # Box 1
         fileBox1 = kasten1.name
 
-        # Lese Box 1 aus und speichere in 
-        # gleichnamiger Liste
-        with open(fileBox1, "r") as csv_file: 
-            csv_reader = csv.reader(csv_file)
+        # Anzahl der Karten pro Csv
+        box1_length     = self.get_length_Element_Csv(fileBox1)
+        box2_length     = self.get_length_Element_Csv("files/Box_2.csv")
+        box3_length     = self.get_length_Element_Csv("files/Box_3.csv")
+        box4_length     = self.get_length_Element_Csv("files/Box_4.csv")
+        box5_length     = self.get_length_Element_Csv("files/Box_5.csv")
 
-            for row in csv_reader:
-                box1.append(row)
-
-            print("In Box 1 sind {} Karten".format(len(box1)))
+        print("In Box 1 sind {} Karten".format(box1_length))
+        print("In Box 2 sind {} Karten".format(box2_length))
+        print("In Box 3 sind {} Karten".format(box3_length))
+        print("In Box 4 sind {} Karten".format(box4_length))
+        print("In Box 5 sind {} Karten".format(box5_length))
         
-        # Lese Box 2 aus und speichere in 
-        # gleichnamiger Liste
-        with open("files/Box_2.csv", "r") as csv_file: 
-            csv_reader = csv.reader(csv_file)
-
-            for row in csv_reader:
-                box2.append(row)
             
-            print("In Box 2 sind {} Karten".format(len(box2)))
-        
-        # Lese Box 3 aus und speichere in 
-        # gleichnamiger Liste
-        with open("files/Box_3.csv", "r") as csv_file: 
-            csv_reader = csv.reader(csv_file)
-
-            for row in csv_reader:
-                box3.append(row)
-
-            print("In Box 3 sind {} Karten".format(len(box3)))
-        
-        # Lese Box 4 aus und speichere in 
-        # gleichnamiger Liste
-        with open("files/Box_4.csv", "r") as csv_file: 
-            csv_reader = csv.reader(csv_file)
-
-            for row in csv_reader:
-                box4.append(row)
-
-            print("In Box 4 sind {} Karten".format(len(box4)))
-
-        # Lese Box 5 aus und speichere in 
-        # gleichnamiger Liste
-        with open("files/Box_5.csv", "r") as csv_file: 
-            csv_reader = csv.reader(csv_file)
-
-            for row in csv_reader:
-                box5.append(row)
-
-            print("In Box 5 sind {} Karten".format(len(box5)))
-
     # Schaue ob alle Boxen leer sind, 
     # damit gesagt wird, dass alles beantwortet wurde
     def getFinalAnswer(self, kasten1):
-        # Listen, in denen der Inhalt der einzelnen 
-        # Csv Dateien gespeichert wird
-        box1    = []
-        box2    = []
-        box3    = []
-        box4    = []
-        box5    = []
-        result  = []
 
         # Box 1
         fileBox1 = kasten1.name
 
-        # Lese Box 1 aus und speichere in 
-        # gleichnamiger Liste
-        with open(fileBox1, "r") as csv_file: 
-            csv_reader = csv.reader(csv_file)
+        # Lese die Laenge alles Csv-Dateien aus
+        # Wenn alle Leer, so wurde alles beantwortet
+        # ausgenommen 'result.csv', die gefuellt sei muss
+        box1    = self.get_size_of_Csv(fileBox1)
+        box2    = self.get_size_of_Csv("files/Box_2.csv")
+        box3    = self.get_size_of_Csv("files/Box_3.csv")
+        box4    = self.get_size_of_Csv("files/Box_4.csv")
+        box5    = self.get_size_of_Csv("files/Box_5.csv")
+        result  = self.get_size_of_Csv("files/result.csv")
 
-            for row in csv_reader:
-                box1.append(row)
-
-        # Lese Box 2 aus und speichere in 
-        # gleichnamiger Liste
-        with open("files/Box_2.csv", "r") as csv_file: 
-            csv_reader = csv.reader(csv_file)
-
-            for row in csv_reader:
-                box2.append(row)
-            
-        # Lese Box 3 aus und speichere in 
-        # gleichnamiger Liste
-        with open("files/Box_3.csv", "r") as csv_file: 
-            csv_reader = csv.reader(csv_file)
-
-            for row in csv_reader:
-                box3.append(row)
-        
-        # Lese Box 4 aus und speichere in 
-        # gleichnamiger Liste
-        with open("files/Box_4.csv", "r") as csv_file: 
-            csv_reader = csv.reader(csv_file)
-
-            for row in csv_reader:
-                box4.append(row)
-
-        # Lese Box 5 aus und speichere in 
-        # gleichnamiger Liste
-        with open("files/Box_5.csv", "r") as csv_file: 
-            csv_reader = csv.reader(csv_file)
-
-            for row in csv_reader:
-                box5.append(row)
-
-
-        # Ueberpruefe, ob ALLE Dateien leer sind    
-        b1 = self.get_length_of_Csv(box1)
-        b2 = self.get_length_of_Csv(box2)
-        b3 = self.get_length_of_Csv(box3)
-        b4 = self.get_length_of_Csv(box4)
-        b5 = self.get_length_of_Csv(box5)
-        
-        if (b1 == True and b2 == True and 
-            b3 == True and b4 == True and
-            b5 == True):
+        if (box1 == True and box2 == True and 
+            box3 == True and box4 == True and
+            box5 == True and result == False):
             
             print("ALLE Fragen wurden beantwortet.\nHerzlichen Glückwunsch!")
             return True
