@@ -84,11 +84,13 @@ def main():
     if final_answer == True:
         db.createDatabase()
         print("\nCreated Database!")
-        print("Die Datenbank ist im Ornder 'database_file' zu finden")
+        print("Die Datenbank ist im Ordner 'database_file' zu finden")
 #----------------------------------------------------------------------------#
 
 
 
+                       # Main
+#----------------------------------------------------------------------------#
 if __name__ == "__main__":
     try:
         main()
@@ -98,3 +100,4 @@ if __name__ == "__main__":
             sys.exit(0)
         except SystemExit:
             os._exit(0)
+#----------------------------------------------------------------------------#
