@@ -1,8 +1,5 @@
 import csv
 import random
-import pandas as pd
-from pandas.io.parsers import read_csv 
-
 
 class Karteikarten(object):
 
@@ -123,7 +120,6 @@ class Karteikarten(object):
     # schreibe diese in 'result.csv'
     def writeIntoResultCsv(self,obj):
 
-          
         box              = []
 
         # 'result.csv'
@@ -141,7 +137,7 @@ class Karteikarten(object):
         # Header
         my_header = ["Frage","Antwort","IndexRichtig","IndexFalsch"]
 
-        # Header als String, um beim Lesen auf einen dupliakten Header zu pruefen
+        # Header als String, um beim Lesen auf einen duplikaten Header zu pruefen
         string_header = ",".join(map(str, my_header)) + "\n"
 
 
@@ -176,13 +172,6 @@ class Karteikarten(object):
             # Schreibe einzelne Elemente hinein
             for row in box:
                 csv_file.write(row)
-
-
-
-
-
-
-
 
     # Aktualsiere Fragen wenn Frage
     # in Box 1 falsch beantwortet wurde
@@ -546,8 +535,7 @@ class Karteikarten(object):
     
 
 
-
-    # Statistics
+    #                           Statistics
     #----------------------------------------------------------------------#
 
     # gebe Anzahl gestellter Fragen,
@@ -653,11 +641,12 @@ class Karteikarten(object):
     def getFinalAnswer(self, kasten1):
         # Listen, in denen der Inhalt der einzelnen 
         # Csv Dateien gespeichert wird
-        box1 = []
-        box2 = []
-        box3 = []
-        box4 = []
-        box5 = []
+        box1    = []
+        box2    = []
+        box3    = []
+        box4    = []
+        box5    = []
+        result  = []
 
         # Box 1
         fileBox1 = kasten1.name
@@ -701,6 +690,7 @@ class Karteikarten(object):
 
             for row in csv_reader:
                 box5.append(row)
+
 
         # Ueberpruefe, ob ALLE Dateien leer sind    
         b1 = self.get_length_of_Csv(box1)
