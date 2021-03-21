@@ -1,5 +1,8 @@
 import csv
 import random
+import pandas as pd
+from pandas.io.parsers import read_csv 
+
 
 class Karteikarten(object):
 
@@ -121,12 +124,12 @@ class Karteikarten(object):
     def writeIntoResultCsv(self,obj):
 
           
-        box         = []
+        box              = []
 
         # 'result.csv'
         file = self.__nextBox
 
-         #Attribute jeder Zeile
+        # Attribute jeder Zeile
         question    = obj[0]
         answer      = obj[1]
         rightIndex  = obj[2]
@@ -135,26 +138,50 @@ class Karteikarten(object):
         # Attribute als Zeile
         line = "{},{},{},{}\n".format(question, answer, rightIndex, wrongIndex)
 
+        # Header
+        my_header = ["Frage","Antwort","IndexRichtig","IndexFalsch"]
+
+        # Header als String, um beim Lesen auf einen dupliakten Header zu pruefen
+        string_header = ",".join(map(str, my_header)) + "\n"
+
+
         # Fuege die richtig-beantwortete Frage hinzu
         with open(file, "a") as csv_writer:
             csv_writer.write(line)
+
 
         # Lese 'result.csv' erneut aus, damit die Frage, 
         # die als letztes beantwortet worden ist, 
         # ganz oben in der Datei steht
         with open(file, "r") as csv_reader:
+
+            # Header wird uebersprungen
             for row in csv_reader:
-                box.append(row)
+                if row == string_header:
+                    continue
+                else:
+                    box.append(row)
+
 
         # letztes Element ist nun das erste
         box.reverse()
 
-
         # Schreibe die umgedrehte Liste wieder ein
-        with open(file, "w") as csv_writer:
+        with open(file, "w") as csv_file:
+            csv_writer = csv.writer(csv_file)
 
+            # Schreibe Header hinein
+            csv_writer.writerow(i for i in my_header)
+
+            # Schreibe einzelne Elemente hinein
             for row in box:
-                csv_writer.write(row)
+                csv_file.write(row)
+
+
+
+
+
+
 
 
     # Aktualsiere Fragen wenn Frage

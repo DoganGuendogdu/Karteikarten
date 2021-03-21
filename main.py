@@ -10,10 +10,10 @@ def main():
      
     # Begruessung   
     print("\nWilkommen zum Lernprogramm")
-    print("Bitte beachte die Gross,- und Kleinschreibung")
-    print("Bitte waehlen Sie ihre Csv-Datei aus")
+    # print("Bitte beachte die Gross,- und Kleinschreibung")
+    # print("Bitte waehlen Sie ihre Csv-Datei aus")
     
-    #Lese die Box 1 durch den User ein und checke auf Fehler
+    # Lese die Box 1 durch den User ein und checke auf Fehler
     box1    = ui.inputFile()
     
     # Checke das Format der entgegengenommenen Datei
@@ -34,44 +34,48 @@ def main():
     #     print("Zeitlimit ist abgelaufen!") 
     
     
-    # # Karteiprogramm fuer Box 1
-    print("\nBox 1")
-    k1 = kk.Karteikarten(box1, box1, "files/Box_2.csv")
-    k1.checkBox1()
+    # # # Karteiprogramm fuer Box 1
+    # print("\nBox 1")
+    # k1 = kk.Karteikarten(box1, box1, "files/Box_2.csv")
+    # k1.checkBox1()
     
-    # # Karteiprogramm fuer Box 2
-    print("\nBox 2")
-    k2 = kk.Karteikarten(box1, "files/Box_2.csv", "files/Box_3.csv")
-    k2.checkOtherBoxes() 
+    # # # Karteiprogramm fuer Box 2
+    # print("\nBox 2")
+    # k2 = kk.Karteikarten(box1, "files/Box_2.csv", "files/Box_3.csv")
+    # k2.checkOtherBoxes() 
     
-    # # Karteiprogramm fuer Box 3
-    print("\nBox 3")
-    k3 = kk.Karteikarten(box1, "files/Box_3.csv", "files/Box_4.csv")
-    k3.checkOtherBoxes()
+    # # # Karteiprogramm fuer Box 3
+    # print("\nBox 3")
+    # k3 = kk.Karteikarten(box1, "files/Box_3.csv", "files/Box_4.csv")
+    # k3.checkOtherBoxes()
 
-    # Karteiprogramm fuer Box 4
-    print("\nBox 4")
-    k4 = kk.Karteikarten(box1, "files/Box_4.csv", "files/Box_5.csv")
-    k4.checkOtherBoxes()
+    # # Karteiprogramm fuer Box 4
+    # print("\nBox 4")
+    # k4 = kk.Karteikarten(box1, "files/Box_4.csv", "files/Box_5.csv")
+    # k4.checkOtherBoxes()
 
-    # # Karteiprogramm fuer Box 5
+    # Karteiprogramm fuer Box 5
     print("\nBox 5")
     k5 = kk.Karteikarten(box1, "files/Box_5.csv", "files/result.csv")
     k5.checkBox5()
 
 
-                    #Statistik
-    #----------------------------------------------#
-    r = kk.Karteikarten(None,None,None)
-    # Gebe Statistik ueber gestelle Fragen aus
-    r.getStatisticOfQuestion()
-    # Gebe aus, wie viele Fragen noch in den Boxen
-    r.getNumberOfQuestions(box1)
-    # schaue, ob alle Fragen beantwortet wurden
-    r.getFinalAnswer(box1)
+    #                 # Statistik
+    # #----------------------------------------------#
+    # r = kk.Karteikarten(None,None,None)
+    # # Gebe Statistik ueber gestelle Fragen aus
+    # r.getStatisticOfQuestion()
+    # # Gebe aus, wie viele Fragen noch in den Boxen
+    # r.getNumberOfQuestions(box1)
+    # # schaue, ob alle Fragen beantwortet wurden
+    # final_answer = r.getFinalAnswer(box1)
 
 
-    # db.createDatabase()
+                    # Datenbank
+#----------------------------------------------------------------------------#
+    db.createDatabase()
+
+
 
 if __name__ == "__main__":
     try:
