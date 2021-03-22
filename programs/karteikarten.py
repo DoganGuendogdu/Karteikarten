@@ -1,4 +1,5 @@
 import csv
+from os import stat
 import random
 
 class Karteikarten(object):
@@ -564,8 +565,7 @@ class Karteikarten(object):
         print("Anzahl gestellter Fragen      : "+ str(counterQuestions))
         print("Anzahl der richtigen Antworten: "+ str(counterAnswerRight))
         print("Anzahl der falschen Antworten : "+ str(counterAnswerFalse))
-        print(str(procent)+ "% der Fragen wurden richtig beantwortet")
-        print()
+        print(str(procent)+ "% der Fragen wurden richtig beantwortet\n")
 
     # True  --> Datei ist leer 
     # False --> Datei ist nicht leer
@@ -578,8 +578,8 @@ class Karteikarten(object):
                 csv_reader = csv.reader(csv_file)
                 for row in csv_reader:
                     box.append(row)
-        except:
-            pass
+        except FileNotFoundError:
+            return
 
         if len(box) == 0:
             return True
@@ -599,7 +599,7 @@ class Karteikarten(object):
                     box.append(row)
 
         except FileNotFoundError:
-            pass
+            return 
 
         return(len(box))
 
@@ -629,6 +629,7 @@ class Karteikarten(object):
     # damit gesagt wird, dass alles beantwortet wurde
     def getFinalAnswer(self, kasten1):
 
+
         # Box 1
         fileBox1 = kasten1.name
 
@@ -650,3 +651,50 @@ class Karteikarten(object):
             return True
         else:
             return False
+
+
+    #-------------------------------------------------------------------------#
+
+
+    #                          Exception-Handling
+    #-------------------------------------------------------------------------#  
+    # Uebergebe Csv, aus der gelesen wird
+    # Dessen Karten alle in Box 1 anhaengen
+    @staticmethod
+    def write_all_cards_into_box1(box1,file):
+        box = []
+        try:
+            # Lese die Box aus
+            with open(file, "r") as csv_file:
+                csv_reader = csv.reader(csv_file)
+
+                for row in csv_reader:
+                    box.append(row)
+        except FileNotFoundError:
+            return
+        
+        try:
+            # Schreibe die Karten aus der ausgelesenen Box in Box1 zurueck
+            write_file = box1.name
+            with open(write_file, "a") as csv_file:
+                csv_writer = csv.writer(csv_file)
+
+                csv_writer.writerows(box)
+        except:
+            print("Fehler beim Zurueck-Hinzufuegen in Box 1")
+            quit()
+
+        # Loesche ALLE Karten aus der Csv
+        open(file, "w").close()
+
+    # Bei KeyboardInterrupt schreibe alle Karten wieder in Box 1 
+    # und loesche sie aus der aktuellen Box
+    def catch_KeyboardInterrupt(self,box1):
+        self.write_all_cards_into_box1(box1,"files/Box_2.csv")
+        self.write_all_cards_into_box1(box1,"files/Box_3.csv")
+        self.write_all_cards_into_box1(box1,"files/Box_4.csv")
+        self.write_all_cards_into_box1(box1,"files/Box_5.csv")
+        
+
+    #-------------------------------------------------------------------------#
+
