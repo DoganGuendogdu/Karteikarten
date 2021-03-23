@@ -1,5 +1,16 @@
+import os 
 import sqlite3
-import pandas as pd
+
+                # import Modules
+#----------------------------------------------#
+try:
+    import pandas as pd
+except:
+    print("Modul 'pandas' wird importiert")
+    os.system('python -m pip install pandas')
+#----------------------------------------------#
+
+
 
 def createDatabase():
     # Erstelle der neuen Datenbank-Connection

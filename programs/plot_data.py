@@ -1,6 +1,20 @@
-import matplotlib.pyplot as plt
-import numpy as np
+import os 
 import csv 
+                # import Modules
+#----------------------------------------------#
+try:
+    import matplotlib.pyplot as plt
+except:
+    print("Modul 'matplotlib' wird importiert")
+    os.system('python -m pip install matplotlib')
+
+try:
+    import numpy as np
+except:
+    print("Modul 'numpy' wird importiert")
+    os.system('python -m pip install numpy')
+#----------------------------------------------#
+
 
 def plot_data():
     x = []

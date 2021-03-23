@@ -1,6 +1,15 @@
-import tkinter
-from tkinter import filedialog
+import os
 import csv
+
+                # import Modules
+#----------------------------------------------#
+try:
+    import tkinter
+    from tkinter import filedialog
+except:
+    print("Modul 'tkinter' wird importiert")
+    os.system('python -m pip install tk')
+#----------------------------------------------#
 
 
 

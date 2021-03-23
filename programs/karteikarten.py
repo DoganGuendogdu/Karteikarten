@@ -1,6 +1,5 @@
-import csv
-from os import stat
-import random
+import csv 
+import random 
 
 class Karteikarten(object):
 

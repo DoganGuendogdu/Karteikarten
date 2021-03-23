@@ -1,4 +1,4 @@
-import datetime 
+#import datetime 
 import sys
 import programs.userInput    as ui
 import programs.karteikarten as kk
