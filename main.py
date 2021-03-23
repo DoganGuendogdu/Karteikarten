@@ -3,6 +3,7 @@ import sys
 import programs.userInput    as ui
 import programs.karteikarten as kk
 import programs.database     as db
+import programs.plot_data    as plot
 
 
 def main():
@@ -12,7 +13,7 @@ def main():
     try:
         # Begruessung   
         print("\nWilkommen zum Lernprogramm")
-        print("Bitte beachte die Gross,- und Kleinschreibung")
+        print("Bitte beachten Sie die Gross,- und Kleinschreibung")
         print("Bitte waehlen Sie ihre Csv-Datei aus")
 
         # Instanz ohne jeglichen Attribute, 
@@ -70,28 +71,49 @@ def main():
 
 
 
-                            # Statistik
-    #-------------------------------------------------------------------------#
+    #                         # Statistik
+    # #-------------------------------------------------------------------------#
         # Gebe Statistik ueber gestelle Fragen aus
         karteikarte.getStatisticOfQuestion()
         # Gebe aus, wie viele Fragen noch in den Boxen
         karteikarte.getNumberOfQuestions(box1)
         # schaue, ob alle Fragen beantwortet wurden
         final_answer = karteikarte.getFinalAnswer(box1)
-    #-------------------------------------------------------------------------#
+    # #-------------------------------------------------------------------------#
 
 
 
-                           # Datenbank
-    #----------------------------------------------------------------------------#
+    #                       #### Finales Ergebnis
+    # #----------------------------------------------------------------------------#
         # Wenn alle richtig Fragen beantwortet worden sind, 
         # erstelle Datenbank
         if final_answer == True:
+
+                            # Datenbank
+        #----------------------------------------------------------------------#    
             db.createDatabase()
             print("\nCreated Database!")
             print("Die Datenbank ist im Ordner 'database_file' zu finden")
+        #----------------------------------------------------------------------#
+
+
+                            # Matplotlib
+        #----------------------------------------------------------------------#
+            print("\nMoechten Sie sich das Ergebnis plotten lassen?")
+            print("j/n?")
+
+            ask_user_for_plot = ui.ask_for_plot()
+
+            if ask_user_for_plot == "j":
+                plot.plot_data()
+                sys.exit(0)
+            else:
+                sys.exit(0)
+        #----------------------------------------------------------------------#
+
     #----------------------------------------------------------------------------#
-    
+
+
     # Catche den KeyboardInterrupt hier, 
     # da sont kein Zugriff auf box1 erreicht werden kann
     except KeyboardInterrupt:

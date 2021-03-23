@@ -131,4 +131,19 @@ def inputFile():
     root.destroy()
 
     return file
-    
+
+# Frage, ob User Grafik plotten moechte 
+def ask_for_plot():
+
+    user_input = input()
+
+    # Auswahl zwischen j--> Ja und n-->Nein
+    if user_input == "j":
+        return user_input
+    elif user_input == "n":
+        return user_input
+    else:
+        print("\nEingabe entspricht nicht dem erlaubten Format")
+        print("Bitte erneut eingeben")
+        return ask_for_plot()
+
