@@ -4,8 +4,8 @@
 Das Lernprogramm verfolt das klassische Prinzip des Karteilernens.
 
 Intention der Entwicklung ist das Selbstudium mit Python.
-Das Programm ist mit Absicht auf Deutsch entwickelt worden,
-um vor allem die Nachvollziehbarkeit in meinem ersten eigenen Projekt in Python in den Vordergrund zu stellen.
+Das Programm ist mit Absicht auf Deutsch entwickelt worden,  
+um vor allem die Nachvollziehbarkeit in meinem ersten eigenen Projekt in Python in den Vordergrund zu stellen.  
 Weitere Entwicklungen sind definitiv auf Englisch geplant.
 
 ## 1.2 Einfuehrung in das Prinzip des Lernprogramms:
@@ -27,8 +27,8 @@ python3 main.py
 
 ## 3.1 Einlesen der Datei
  1. Es sind lediglich Dateien im CSV-Format erlaubt.
- 2. Frage und Anwort muessen durch ein **Komma** getrennt werden 
-  2.1 Beispiel Inhalt CSV:
+ 2. Frage und Anwort muessen durch ein **Komma** getrennt werden  
+ 2.1 Beispiel Inhalt CSV:
     ``` 
     Wie gross ist der Erdradius?,6.300km
     Wie hoch ist der Burj Khalifa?,828m
