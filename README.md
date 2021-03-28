@@ -17,8 +17,24 @@ https://en.wikipedia.org/wiki/Flashcard
 
 
 # 2 Ausfuehrung
-1. git clone https://github.com/DoganGuendogdu/Karteikarten.git 
-2. cd Karteikarten
-3. pip3 install -r requirement.txt
-4. python3 main.py
+```
+git clone https://github.com/DoganGuendogdu/Karteikarten.git 
+cd Karteikarten
+pip3 install -r requirement.txt
+python3 main.py
+```
+# 3 Dokumentation
+
+## 3.1 Einlesen der Datei
+ 1. Es sind lediglich Dateien im CSV-Format erlaubt.
+ 2. Frage und Anwort muessen durch ein **Komma** getrennt werden 
+  2.1 Beispiel Inhalt CSV:
+    ``` 
+    Wie gross ist der Erdradius?,6.300km
+    Wie hoch ist der Burj Khalifa?,828m
+    Welcher ist der groesste Kontinent?,Asien
+    ``` 
+ 3. Hierbei spielen White Spaces **keine** Rolle
+
+        
 
