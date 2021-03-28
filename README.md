@@ -1,4 +1,4 @@
-### 1 Einfuehrung 
+# 1 Einfuehrung 
 
 ## 1.1 Ziel und Intention
 Das Lernprogramm verfolt das klassische Prinzip des Karteilernens.
@@ -9,14 +9,14 @@ um vor allem die Nachvollziehbarkeit in meinem ersten eigenen Projekt in Python 
 Weitere Entwicklungen sind definitiv auf Englisch geplant.
 
 ## 1.2 Einfuehrung in das Prinzip des Lernprogramms:
-## Deutsch   
+### Deutsch   
 https://de.wikipedia.org/wiki/Lernkartei
 
-## Englisch 
+### Englisch 
 https://en.wikipedia.org/wiki/Flashcard
 
 
-### 2 Ausfuehrung
+# 2 Ausfuehrung
 1. git clone https://github.com/DoganGuendogdu/Karteikarten.git 
 2. cd Karteikarten
 3. pip3 install -r requirement.txt
