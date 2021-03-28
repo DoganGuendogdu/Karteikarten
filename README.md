@@ -9,10 +9,10 @@ um vor allem die Nachvollziehbarkeit in meinem ersten eigenen Projekt in Python 
 Weitere Entwicklungen sind definitiv auf Englisch geplant.
 
 ## 1.2 Einfuehrung in das Prinzip des Lernprogramms:
-# Deutsch   
+## Deutsch   
 https://de.wikipedia.org/wiki/Lernkartei
 
-# Englisch 
+## Englisch 
 https://en.wikipedia.org/wiki/Flashcard
 
 
