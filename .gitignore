@@ -4,6 +4,7 @@
 /.vscode/.ropeproject/config.py
 /.vscode/.ropeproject/objectdb
 
-/database_file/*
-/programs/__pycache__
-/files/*
+database_file/result.db
+!files/.gitkeep
+programs/__pycache__
+files/test.csv
