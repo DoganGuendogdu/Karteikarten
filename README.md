@@ -25,7 +25,7 @@ python3 main.py
 ```
 # 3 Dokumentation
 
-## 3.1 Einlesen der Datei
+## 3.1 Kriterien der einzulesenen Datei
  1. Es sind lediglich Dateien im CSV-Format erlaubt.
  2. Frage und Anwort muessen durch ein **Komma** getrennt werden  
  2.1 Beispiel Inhalt CSV:
@@ -36,5 +36,22 @@ python3 main.py
     ``` 
  3. Hierbei spielen White Spaces **keine** Rolle
 
-        
+## 3.2 Ablauf Programm 
+
+### 3.2.1 Datei entgegennehmen
+  
+
+### 3.2.2 Lernprogramm
+
+### 3.2.3 Ende der ersten Lernsession
+
+### 3.2.4 Datenbank
+
+### 3.2.5 Plot Ergebnis
+
+
+
+
+
+
 
