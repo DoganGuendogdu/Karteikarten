@@ -7,11 +7,8 @@ try:
     from tkinter import filedialog
 except:
     print("Modul 'tkinter' wird importiert")
-    os.system('python -m pip install tk')
+    os.system('apt-get install python3-tk --user')
 #----------------------------------------------#
-
-
-
 # Nehme die Lernzeit des Benutzers entgegen
 def getStudyTime(): 
     # Zeiteingabe des Benutzers
@@ -40,7 +37,6 @@ def getStudyTime():
 # Lese ausgewaehlte Datei des Users ein und
 # checke auf formale Kriterien
 def inputFile():
-
 
     # Eigenschaften des Fensters
     root = tkinter.Tk()
