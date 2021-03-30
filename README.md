@@ -80,7 +80,7 @@ wie oft die gestellte Frage falsch oder richtig beantwortet worden ist.
 
 ### 4.2.5 Datenbank
 Wenn **alle** Fragen in der eingelesenen Datei erfolgreich beantwortet worden sind,  
-so wird automatisch eine Datenbank mittels sqlite3 erstellt.
+so wird automatisch eine Datenbank mittels sqlite3 erstellt.  
 <img src = "images/database.png"> 
 
 ### 4.2.6 Plot Ergebnis
