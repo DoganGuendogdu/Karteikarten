@@ -1,3 +1,10 @@
+# 0 Agenda 
+* [Einfuehrung](#einf)
+* [Installation](#installation)
+* [Dokumentation](#doc)
+
+ <a name="einf"/>
+ 
 # 1 Einfuehrung 
 
 ## 1.1 Ziel und Intention
@@ -8,13 +15,23 @@ Das Programm ist mit Absicht auf Deutsch entwickelt worden,
 da es auch im privaten Gebrauch meinerseits eingesetzt wird.  
 Weitere Projekte sind definitiv auf Englisch geplant.
 
-## 1.2 Einfuehrung in das Prinzip des Lernprogramms:
+## 1.2 Technologien 
+* matplotlib 3.4.0
+* numpy      1.20.2
+* pandas     1.2.3
+* tk         0.1.0
+* sqlite3    3.33.0
+* matplotlib 3.4.0
+
+
+## 1.3 Prinzip des Lernprogramms:
 ### Deutsch   
 https://de.wikipedia.org/wiki/Lernkartei
 
 ### Englisch 
 https://en.wikipedia.org/wiki/Flashcard
 
+ <a name="installation"/>
 
 # 2 installation
 ```
@@ -23,12 +40,14 @@ cd Karteikarten
 pip3 install -r requirement.txt
 python3 main.py
 ```
+ <a name="doc"/>
+
 # 3 Dokumentation
 
 ## 3.1 Kriterien der einzulesenen Datei
- 1. Es sind lediglich Dateien im CSV-Format erlaubt.
- 2. Frage und Anwort muessen durch ein **Komma** getrennt werden  
- 3. Hierbei spielen White Spaces **keine** Rolle
+* Es sind lediglich Dateien im CSV-Format erlaubt.
+* Frage und Anwort muessen durch ein **Komma** getrennt werden  
+* Hierbei spielen White Spaces **keine** Rolle
  
  ### 3.1.1 Beispiel CSV
  <img src = "images/questions_answers.png" width = "650">
