@@ -1,9 +1,10 @@
 # 0 Agenda 
 * [Einfuehrung](#einf)
+* [Technologien](#tech)
 * [Installation](#installation)
 * [Dokumentation](#doc)
 
- <a name="einf"/>
+<a name="einf"/>
  
 # 1 Einfuehrung 
 
@@ -15,7 +16,17 @@ Das Programm ist mit Absicht auf Deutsch entwickelt worden,
 da es auch im privaten Gebrauch meinerseits eingesetzt wird.  
 Weitere Projekte sind definitiv auf Englisch geplant.
 
-## 1.2 Technologien 
+
+## 1.2 Prinzip des Lernprogramms:
+### Deutsch   
+https://de.wikipedia.org/wiki/Lernkartei
+
+### Englisch 
+https://en.wikipedia.org/wiki/Flashcard
+
+<a name="tech"/>
+
+# 2 Technologien 
 * matplotlib 3.4.0
 * numpy      1.20.2
 * pandas     1.2.3
@@ -23,50 +34,42 @@ Weitere Projekte sind definitiv auf Englisch geplant.
 * sqlite3    3.33.0
 * matplotlib 3.4.0
 
+<a name="installation"/>
 
-## 1.3 Prinzip des Lernprogramms:
-### Deutsch   
-https://de.wikipedia.org/wiki/Lernkartei
-
-### Englisch 
-https://en.wikipedia.org/wiki/Flashcard
-
- <a name="installation"/>
-
-# 2 installation
+# 3 installation
 ```
 git clone https://github.com/DoganGuendogdu/Karteikarten.git 
 cd Karteikarten
 pip3 install -r requirement.txt
 python3 main.py
 ```
- <a name="doc"/>
+<a name="doc"/>
 
-# 3 Dokumentation
+# 4 Dokumentation
 
-## 3.1 Kriterien der einzulesenen Datei
+## 4.1 Kriterien der einzulesenen Datei
 * Es sind lediglich Dateien im CSV-Format erlaubt.
 * Frage und Anwort muessen durch ein **Komma** getrennt werden  
 * Hierbei spielen White Spaces **keine** Rolle
  
- ### 3.1.1 Beispiel CSV
+ ### 4.1.1 Beispiel CSV
  <img src = "images/questions_answers.png" width = "650">
 
 
-## 3.2 Ablauf Programm 
+## 4.2 Ablauf Programm 
 
-### 3.2.1 Datei entgegennehmen
+### 4.2.1 Datei entgegennehmen
 <img src = "images/input.jpg"> 
   
-### 3.2.2 Lernprogramm
+### 4.2.2 Lernprogramm
 <img src ="images/program.png">
 
-### 3.2.3 Ergebnis der Lernsession
+### 4.2.3 Ergebnis der Lernsession
 Nach Ende des Durchlaufs wird eine Statistik mit Anzahl der Fragen  
 sowie der prozentuale Wert des Lernerfolgs festgelegt.  
 <img src = "images/statistics.png"> 
 
-### 3.2.4 weitere Lernsessions
+### 4.2.4 weitere Lernsessions
 Wenn nach dem ersten Durchlauf noch Karten in der ersten Box,  
 also der eingelesenen Datei existieren,  
 so muss fuer die naechsten Durchlaeufe dieselbe Datei zu Beginn eingelesen werden.
@@ -75,12 +78,12 @@ Nach der ersten Session ist zu sehen,
 wie oft die gestellte Frage falsch oder richtig beantwortet worden ist.    
 <img src = "images/after_session.png"> 
 
-### 3.2.5 Datenbank
+### 4.2.5 Datenbank
 Wenn **alle** Fragen in der eingelesenen Datei erfolgreich beantwortet worden sind,  
 so wird automatisch eine Datenbank mittels sqlite3 erstellt.
 <img src = "images/database.png"> 
 
-### 3.2.6 Plot Ergebnis
+### 4.2.6 Plot Ergebnis
 Bei Bedarf kann der User entscheiden, ob das Ergebnis geplotet werden soll.  
 <img src = "images/plot.png"> 
 
