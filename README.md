@@ -5,7 +5,7 @@ Das Lernprogramm verfolgt das klassische Prinzip des Karteilernens.
 
 Intention der Entwicklung ist das Selbstudium mit Python.
 Das Programm ist mit Absicht auf Deutsch entwickelt worden,  
-da es auch im privaten Gebrauch meinerseits zu Gebrauch kommt. 
+da es auch im privaten Gebrauch meinerseits eingesetzt wird.  
 Weitere Projekte sind definitiv auf Englisch geplant.
 
 ## 1.2 Einfuehrung in das Prinzip des Lernprogramms:
