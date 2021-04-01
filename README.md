@@ -15,8 +15,9 @@ Das Programm ist momentan **nur** fuer **Debian-based** Linux-Distrubutionen aus
 Das Lernprogramm verfolgt das klassische Prinzip des Karteilernens.
 
 Intention der Entwicklung ist das Selbstudium mit Python.
+
 Das Programm ist mit Absicht auf Deutsch entwickelt worden,  
-da es auch im privaten Gebrauch meinerseits eingesetzt wird.  
+da es auch im privaten Gebrauch meinerseits eingesetzt wird.
 Weitere Projekte sind definitiv auf Englisch geplant.
 
 
