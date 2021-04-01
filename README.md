@@ -8,7 +8,10 @@
  
 # 1 Einfuehrung 
 
-## 1.1 Ziel und Intention
+## 1.1 Anmerkung 
+Das Programm ist momentan **nur** fuer **Debian-based** Linux-Distrubutionen ausgelegt.
+
+## 1.2 Ziel und Intention
 Das Lernprogramm verfolgt das klassische Prinzip des Karteilernens.
 
 Intention der Entwicklung ist das Selbstudium mit Python.
@@ -17,7 +20,7 @@ da es auch im privaten Gebrauch meinerseits eingesetzt wird.
 Weitere Projekte sind definitiv auf Englisch geplant.
 
 
-## 1.2 Prinzip des Lernprogramms:
+## 1.3 Prinzip des Lernprogramms:
 ### Deutsch   
 https://de.wikipedia.org/wiki/Lernkartei
 
