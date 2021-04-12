@@ -7,7 +7,7 @@ try:
     from tkinter import filedialog
 except:
     print("Modul 'tkinter' wird importiert")
-    os.system('sudo install python3-tk')
+    os.system('sudo apt-get install python3-tk')
 #----------------------------------------------#
 # Nehme die Lernzeit des Benutzers entgegen
 def getStudyTime(): 
