@@ -42,6 +42,8 @@ https://en.wikipedia.org/wiki/Flashcard
 
 # 3 installation
 ```
+sudo apt-get install python3-tk
+
 git clone https://github.com/DoganGuendogdu/Karteikarten.git 
 cd Karteikarten
 pip3 install -r requirement.txt
